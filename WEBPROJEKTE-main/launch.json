@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Open ContainerRent Website",
+            "file": "C:\\Users\\ilian\\Downloads\\WEBPROJEKTE-main\\WEBPROJEKTE-main\\index.html"
+        }
+    ]
+}
