@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "three": "^0.160.1"
+  }
+}
