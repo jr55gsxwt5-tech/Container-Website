@@ -809,7 +809,7 @@ cite {
 
 .modal-close:hover,
 .modal-close:focus-visible {
-    background: var(--red);
+    background: var(--orange);
     color: var(--ink);
     transform: rotate(90deg);
 }
