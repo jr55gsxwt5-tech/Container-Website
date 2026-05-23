@@ -9,7 +9,8 @@
     --orange: #ff8a3d;
     --coal: #17221f;
     --shadow: 0 24px 70px rgba(17, 24, 22, 0.14);
-}
+    --red: #ff0033;
+    --mint: #26c89f;
 
 * {
     box-sizing: border-box;
