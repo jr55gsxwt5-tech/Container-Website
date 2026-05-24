@@ -12,6 +12,13 @@ const types = {
     ".glb": "model/gltf-binary",
     ".gltf": "model/gltf+json",
     ".bin": "application/octet-stream",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+    ".avif": "image/avif",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
 };
 
 http.createServer(async (request, response) => {

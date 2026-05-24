@@ -10,6 +10,18 @@ const canvas = document.querySelector("#model-canvas");
 const previewButtons = document.querySelectorAll("[data-preview]");
 const closeButtons = document.querySelectorAll("[data-close-preview]");
 const spinToggle = document.querySelector("[data-spin-toggle]");
+const galleryModal = document.querySelector("[data-gallery-modal]");
+const galleryTitle = document.querySelector("#gallery-title");
+const galleryStatus = document.querySelector("[data-gallery-status]");
+const galleryStage = document.querySelector("[data-gallery-stage]");
+const galleryImage = document.querySelector("[data-gallery-image]");
+const galleryCaption = document.querySelector("[data-gallery-caption]");
+const galleryFallback = document.querySelector("[data-gallery-fallback]");
+const galleryButtons = document.querySelectorAll("[data-gallery]");
+const closeGalleryButtons = document.querySelectorAll("[data-close-gallery]");
+const galleryPrev = document.querySelector("[data-gallery-prev]");
+const galleryNext = document.querySelector("[data-gallery-next]");
+const galleryThumbs = document.querySelector("[data-gallery-thumbs]");
 
 let renderer;
 let scene;
@@ -20,6 +32,9 @@ let activeModel;
 let animationId;
 let resizeObserver;
 let isSpinning = true;
+let galleryImages = [];
+let galleryIndex = 0;
+let galleryPointerStartX = null;
 
 const modelMaterials = {
     Office: {
@@ -130,6 +145,12 @@ const setSpinState = (shouldSpin) => {
     spinToggle.classList.toggle("is-paused", !shouldSpin);
     spinToggle.setAttribute("aria-label", shouldSpin ? "Drehung pausieren" : "Drehung starten");
     spinToggle.setAttribute("title", shouldSpin ? "Drehung pausieren" : "Drehung starten");
+};
+
+const updateModalOpenState = () => {
+    const isModelOpen = modal && !modal.hidden;
+    const isGalleryOpen = galleryModal && !galleryModal.hidden;
+    document.body.classList.toggle("modal-open", isModelOpen || isGalleryOpen);
 };
 
 const clearActiveModel = () => {
@@ -279,8 +300,9 @@ const loadModel = ({ modelPath, type }) => {
 
 const openPreview = (button) => {
     ensureViewer();
+    galleryModal.hidden = true;
     modal.hidden = false;
-    document.body.classList.add("modal-open");
+    updateModalOpenState();
     title.textContent = button.dataset.title ?? "Container";
     setSpinState(true);
     resizeRenderer();
@@ -292,7 +314,90 @@ const openPreview = (button) => {
 
 const closePreview = () => {
     modal.hidden = true;
-    document.body.classList.remove("modal-open");
+    updateModalOpenState();
+};
+
+const parseGalleryImages = (value) => (value ?? "")
+    .split("|")
+    .map((path) => path.trim())
+    .filter(Boolean);
+
+const updateGalleryControls = () => {
+    const hasMultipleImages = galleryImages.length > 1;
+    galleryPrev.disabled = !hasMultipleImages;
+    galleryNext.disabled = !hasMultipleImages;
+
+    Array.from(galleryThumbs.children).forEach((thumb, index) => {
+        const isActive = index === galleryIndex;
+        thumb.classList.toggle("is-active", isActive);
+        thumb.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+};
+
+const showGalleryImage = (nextIndex) => {
+    if (!galleryImages.length) {
+        galleryImage.hidden = true;
+        galleryFallback.hidden = false;
+        galleryFallback.textContent = "Noch keine Bildpfade eingetragen.";
+        galleryCaption.textContent = "";
+        galleryStatus.textContent = "Keine Bilder";
+        updateGalleryControls();
+        return;
+    }
+
+    galleryIndex = (nextIndex + galleryImages.length) % galleryImages.length;
+    const src = galleryImages[galleryIndex];
+    const displayIndex = galleryIndex + 1;
+
+    galleryStatus.textContent = `Bild ${displayIndex} von ${galleryImages.length}`;
+    galleryCaption.textContent = `${galleryTitle.textContent} - Bild ${displayIndex}`;
+    galleryImage.alt = `${galleryTitle.textContent} Bild ${displayIndex}`;
+    galleryFallback.hidden = true;
+    galleryImage.hidden = false;
+    galleryImage.src = src;
+    updateGalleryControls();
+};
+
+const renderGalleryThumbs = () => {
+    galleryThumbs.replaceChildren();
+
+    galleryImages.forEach((src, index) => {
+        const thumb = document.createElement("button");
+        thumb.className = "gallery-thumb";
+        thumb.type = "button";
+        thumb.setAttribute("aria-label", `Bild ${index + 1} anzeigen`);
+
+        const thumbImage = document.createElement("img");
+        thumbImage.src = src;
+        thumbImage.alt = "";
+        thumbImage.addEventListener("error", () => {
+            thumbImage.remove();
+            const fallback = document.createElement("span");
+            fallback.textContent = `Bild ${index + 1}`;
+            thumb.append(fallback);
+        }, { once: true });
+
+        thumb.append(thumbImage);
+        thumb.addEventListener("click", () => showGalleryImage(index));
+        galleryThumbs.append(thumb);
+    });
+};
+
+const openGallery = (button) => {
+    modal.hidden = true;
+    galleryImages = parseGalleryImages(button.dataset.images);
+    galleryIndex = 0;
+
+    galleryTitle.textContent = button.dataset.title ?? "Container";
+    galleryModal.hidden = false;
+    updateModalOpenState();
+    renderGalleryThumbs();
+    showGalleryImage(0);
+};
+
+const closeGallery = () => {
+    galleryModal.hidden = true;
+    updateModalOpenState();
 };
 
 previewButtons.forEach((button) => {
@@ -303,11 +408,77 @@ closeButtons.forEach((button) => {
     button.addEventListener("click", closePreview);
 });
 
+galleryButtons.forEach((button) => {
+    button.addEventListener("click", () => openGallery(button));
+});
+
+closeGalleryButtons.forEach((button) => {
+    button.addEventListener("click", closeGallery);
+});
+
 spinToggle.addEventListener("click", () => {
     setSpinState(!isSpinning);
 });
 
+galleryPrev.addEventListener("click", () => {
+    showGalleryImage(galleryIndex - 1);
+});
+
+galleryNext.addEventListener("click", () => {
+    showGalleryImage(galleryIndex + 1);
+});
+
+galleryImage.addEventListener("error", () => {
+    const missingPath = galleryImages[galleryIndex] ?? "";
+    galleryImage.hidden = true;
+    galleryFallback.hidden = false;
+    galleryFallback.textContent = `Bilddatei noch nicht gefunden: ${missingPath}`;
+});
+
+galleryStage.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("button")) {
+        return;
+    }
+
+    galleryPointerStartX = event.clientX;
+});
+
+galleryStage.addEventListener("pointerup", (event) => {
+    if (galleryPointerStartX === null) {
+        return;
+    }
+
+    const deltaX = event.clientX - galleryPointerStartX;
+    galleryPointerStartX = null;
+
+    if (Math.abs(deltaX) < 50) {
+        return;
+    }
+
+    showGalleryImage(galleryIndex + (deltaX < 0 ? 1 : -1));
+});
+
+galleryStage.addEventListener("pointercancel", () => {
+    galleryPointerStartX = null;
+});
+
 window.addEventListener("keydown", (event) => {
+    if (!galleryModal.hidden) {
+        if (event.key === "Escape") {
+            closeGallery();
+        }
+
+        if (event.key === "ArrowLeft") {
+            showGalleryImage(galleryIndex - 1);
+        }
+
+        if (event.key === "ArrowRight") {
+            showGalleryImage(galleryIndex + 1);
+        }
+
+        return;
+    }
+
     if (event.key === "Escape" && !modal.hidden) {
         closePreview();
     }

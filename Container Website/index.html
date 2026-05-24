@@ -91,25 +91,40 @@
                     <span class="service-icon">01</span>
                     <h3>Bürocontainer</h3>
                     <p>Helle, funktionale Arbeitsräume für Baustellen, Events oder temporäre Teams.</p>
-                    <button class="preview-button" type="button" data-preview data-title="Bürocontainer" data-type="Office" data-model="models/büro-container.glb">
-                        Vorschau
-                    </button>
+                    <div class="service-actions">
+                        <button class="preview-button" type="button" data-preview data-title="Bürocontainer" data-type="Office" data-model="models/büro-container.glb">
+                            Vorschau
+                        </button>
+                        <button class="preview-button image-button" type="button" data-gallery data-title="Bürocontainer" data-images="bilder/buero/Büro.jpg|bilder/buero/büro2.jpg">
+                            Bilder
+                        </button>
+                    </div>
                 </article>
                 <article class="service-card reveal">
                     <span class="service-icon">02</span>
                     <h3>Lagercontainer</h3>
                     <p>Sichere Lagerfläche für Werkzeuge, Material, Waren oder private Gegenstände.</p>
-                    <button class="preview-button" type="button" data-preview data-title="Lagercontainer" data-type="Storage" data-model="models/lager-container.glb">
-                        Vorschau
-                    </button>
+                    <div class="service-actions">
+                        <button class="preview-button" type="button" data-preview data-title="Lagercontainer" data-type="Storage" data-model="models/lager-container.glb">
+                            Vorschau
+                        </button>
+                        <button class="preview-button image-button" type="button" data-gallery data-title="Lagercontainer" data-images="bilder/lager/Lager.png|bilder/lager/Lager innen.png">
+                            Bilder
+                        </button>
+                    </div>
                 </article>
                 <article class="service-card reveal">
                     <span class="service-icon">03</span>
                     <h3>Flexible Module</h3>
                     <p>Containerlösungen, die sich an Projektgröße, Laufzeit und Standort anpassen.</p>
-                    <button class="preview-button" type="button" data-preview data-title="Flexible Module" data-type="Modular" data-model="models/modul-container.glb">
-                        Vorschau
-                    </button>
+                    <div class="service-actions">
+                        <button class="preview-button" type="button" data-preview data-title="Flexible Module" data-type="Modular" data-model="models/modul-container.glb">
+                            Vorschau
+                        </button>
+                        <button class="preview-button image-button" type="button" data-gallery data-title="Flexible Module" data-images="">
+                            Bilder
+                        </button>
+                    </div>
                 </article>
             </div>
         </section>
@@ -230,6 +245,30 @@
             <div class="model-stage" data-model-stage>
                 <canvas id="model-canvas"></canvas>
             </div>
+        </section>
+    </div>
+
+    <div class="gallery-modal" data-gallery-modal hidden>
+        <button class="modal-backdrop" type="button" data-close-gallery aria-label="Bilder schließen"></button>
+        <section class="gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+            <div class="gallery-toolbar">
+                <div>
+                    <p class="eyebrow">Bilder</p>
+                    <h2 id="gallery-title">Container</h2>
+                    <p class="gallery-status" data-gallery-status>Bild 1 von 1</p>
+                </div>
+                <button class="modal-close" type="button" data-close-gallery aria-label="Bilder schließen">&times;</button>
+            </div>
+            <div class="gallery-stage" data-gallery-stage>
+                <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-prev aria-label="Vorheriges Bild">&#8249;</button>
+                <figure class="gallery-frame">
+                    <img class="gallery-image" data-gallery-image alt="">
+                    <figcaption class="gallery-caption" data-gallery-caption></figcaption>
+                    <p class="gallery-fallback" data-gallery-fallback hidden></p>
+                </figure>
+                <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-next aria-label="Nächstes Bild">&#8250;</button>
+            </div>
+            <div class="gallery-thumbs" data-gallery-thumbs aria-label="Bildauswahl"></div>
         </section>
     </div>
 

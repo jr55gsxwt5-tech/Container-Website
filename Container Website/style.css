@@ -463,6 +463,14 @@ body.modal-open {
     flex: 1;
 }
 
+.service-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+}
+
 .preview-button {
     align-items: center;
     background: var(--coal);
@@ -480,11 +488,29 @@ body.modal-open {
     width: fit-content;
 }
 
+.service-actions .preview-button {
+    margin-top: 0;
+}
+
 .preview-button:hover,
 .preview-button:focus-visible {
     background: var(--green);
     box-shadow: 0 14px 28px rgba(15, 95, 79, 0.22);
     transform: translateY(-2px);
+}
+
+.image-button {
+    background: var(--white);
+    border: 1px solid var(--line);
+    color: var(--ink);
+}
+
+.image-button:hover,
+.image-button:focus-visible {
+    background: var(--orange);
+    border-color: var(--orange);
+    box-shadow: 0 14px 28px rgba(255, 138, 61, 0.24);
+    color: var(--ink);
 }
 
 .advantages {
@@ -662,7 +688,8 @@ cite {
     padding: 24px clamp(18px, 6vw, 88px);
 }
 
-.model-modal {
+.model-modal,
+.gallery-modal {
     display: grid;
     inset: 0;
     padding: clamp(14px, 3vw, 34px);
@@ -671,7 +698,8 @@ cite {
     z-index: 60;
 }
 
-.model-modal[hidden] {
+.model-modal[hidden],
+.gallery-modal[hidden] {
     display: none;
 }
 
@@ -684,7 +712,8 @@ cite {
     backdrop-filter: blur(14px);
 }
 
-.model-dialog {
+.model-dialog,
+.gallery-dialog {
     animation: modal-in 220ms ease;
     background: var(--coal);
     border: 1px solid rgba(255, 255, 255, 0.16);
@@ -700,7 +729,12 @@ cite {
     z-index: 1;
 }
 
-.model-toolbar {
+.gallery-dialog {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.model-toolbar,
+.gallery-toolbar {
     align-items: center;
     background: rgba(255, 255, 255, 0.06);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -710,12 +744,14 @@ cite {
     padding: clamp(18px, 3vw, 28px);
 }
 
-.model-toolbar h2 {
+.model-toolbar h2,
+.gallery-toolbar h2 {
     font-size: clamp(1.55rem, 3vw, 2.6rem);
     line-height: 1.05;
 }
 
-.model-status {
+.model-status,
+.gallery-status {
     color: rgba(255, 255, 255, 0.66);
     font-weight: 700;
     margin-top: 8px;
@@ -829,6 +865,150 @@ cite {
     height: 100%;
     touch-action: none;
     width: 100%;
+}
+
+.gallery-stage {
+    align-items: center;
+    background: linear-gradient(145deg, #182420, #0f1715);
+    display: grid;
+    gap: clamp(12px, 2vw, 22px);
+    grid-template-columns: 64px minmax(0, 1fr) 64px;
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(14px, 3vw, 28px);
+    position: relative;
+}
+
+.gallery-frame {
+    align-items: center;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: 100%;
+    margin: 0;
+    min-width: 0;
+    position: relative;
+}
+
+.gallery-image,
+.gallery-fallback {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    grid-column: 1;
+    grid-row: 1;
+    height: min(58vh, 560px);
+    min-height: 280px;
+    width: 100%;
+}
+
+.gallery-image[hidden],
+.gallery-fallback[hidden] {
+    display: none;
+}
+
+.gallery-image {
+    display: block;
+    object-fit: contain;
+}
+
+.gallery-fallback {
+    align-items: center;
+    color: rgba(255, 255, 255, 0.76);
+    display: flex;
+    font-weight: 800;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.gallery-caption {
+    color: rgba(255, 255, 255, 0.68);
+    font-weight: 800;
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 12px;
+    min-height: 24px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.gallery-arrow {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 3rem;
+    font-weight: 700;
+    height: 58px;
+    justify-content: center;
+    line-height: 1;
+    transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    width: 58px;
+}
+
+.gallery-arrow:hover,
+.gallery-arrow:focus-visible {
+    background: var(--orange);
+    color: var(--ink);
+    transform: translateY(-2px);
+}
+
+.gallery-arrow:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+    transform: none;
+}
+
+.gallery-thumbs {
+    background: rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 14px clamp(18px, 3vw, 28px);
+}
+
+.gallery-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.74);
+    cursor: pointer;
+    flex: 0 0 78px;
+    font-size: 0.78rem;
+    font-weight: 900;
+    height: 58px;
+    overflow: hidden;
+    padding: 0;
+    transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.gallery-thumb:hover,
+.gallery-thumb:focus-visible,
+.gallery-thumb.is-active {
+    border-color: var(--orange);
+    transform: translateY(-1px);
+}
+
+.gallery-thumb img,
+.gallery-thumb span {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.gallery-thumb img {
+    object-fit: cover;
+}
+
+.gallery-thumb span {
+    align-content: center;
+    padding: 8px;
+    text-align: center;
 }
 
 .reveal {
@@ -986,6 +1166,35 @@ cite {
         padding-bottom: 68px;
         padding-top: 68px;
     }
+
+    .gallery-stage {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .gallery-arrow:hover,
+    .gallery-arrow:focus-visible {
+        transform: translateY(calc(-50% - 2px));
+    }
+
+    .gallery-arrow-prev {
+        left: 18px;
+    }
+
+    .gallery-arrow-next {
+        right: 18px;
+    }
+
+    .gallery-image,
+    .gallery-fallback {
+        height: min(52vh, 460px);
+    }
 }
 
 @media (max-width: 480px) {
@@ -1006,8 +1215,22 @@ cite {
         width: 100%;
     }
 
-    .model-toolbar {
+    .service-actions {
+        width: 100%;
+    }
+
+    .model-toolbar,
+    .gallery-toolbar {
         align-items: flex-start;
+    }
+
+    .gallery-stage {
+        padding: 12px;
+    }
+
+    .gallery-arrow {
+        height: 48px;
+        width: 48px;
     }
 
     .process-list li {
