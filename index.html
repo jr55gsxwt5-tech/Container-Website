@@ -7,11 +7,12 @@
     <title>ContainerRent Varna | Moderne Containervermietung</title>
     <link rel="preconnect" href="https://images.unsplash.com">
     <link rel="stylesheet" href="style.css">
+    
     <script type="importmap">
         {
             "imports": {
-                "three": "./node_modules/three/build/three.module.js",
-                "three/addons/": "./node_modules/three/examples/jsm/"
+                "three": "https://unpkg.com/three@0.160.1/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.1/examples/jsm/"
             }
         }
     </script>
@@ -100,7 +101,6 @@
                             Vorschau
                         </button>
 
-                        
                         <button class="preview-button image-button" type="button" 
                         data-gallery 
                         data-title="Bürocontainer" 
@@ -110,20 +110,21 @@
                     </div>
                 </article>
 
-
                 <article class="service-card reveal">
                     <span class="service-icon">02</span>
                     <h3>Lagercontainer</h3>
                     <p>Sichere Lagerfläche für Werkzeuge, Material, Waren oder private Gegenstände.</p>
                     <div class="service-actions">
-                        <button class="preview-button" type="button" data-preview data-title="Lagercontainer" data-type="Storage" data-model="models/lager-container.glb">
+                        <button class="preview-button"
+                         type="button" data-preview data-title="Lagercontainer" data-type="Storage" data-model="models/lager-container.glb">
                             Vorschau
                         </button>
-                        <button class="preview-button image-button" type="button" data-gallery data-title="Lagercontainer" data-images="bilder/lager/Lager.png|bilder/lager/Lager innen.png">
+                        <button class="preview-button image-button" type="button" data-gallery data-title="Lagercontainer" data-images="bilder/lager/Lager.png|bilder/lager/Lager%20innen.png">
                             Bilder
                         </button>
                     </div>
                 </article>
+
                 <article class="service-card reveal">
                     <span class="service-icon">03</span>
                     <h3>Flexible Module</h3>
@@ -149,7 +150,7 @@
             <div class="advantage-layout">
                 <div class="advantage-copy reveal">
                     <p>
-                        Qualität, Zuverlässigkeit und faire Preise stehen im Mittelpunkt. Unsere Container
+                        Qualität, Zuverlässigkeit and faire Preise stehen im Mittelpunkt. Unsere Container
                         sind modern, gepflegt und schnell einsatzbereit.
                     </p>
                     <blockquote>
@@ -268,23 +269,23 @@
                     <h2 id="gallery-title">Container</h2>
                     <p class="gallery-status" data-gallery-status>Bild 1 von 1</p>
                 </div>
-                <button class="modal-close" type="button" data-close-gallery aria-label="Bilder schließen">&times;</button>
+                <button class="modal-close" type="button" data-close-gallery aria-label="Bilder schließen">×</button>
             </div>
             <div class="gallery-stage" data-gallery-stage>
-                <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-prev aria-label="Vorheriges Bild">&#8249;</button>
+                <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-prev aria-label="Vorheriges Bild">‹</button>
                 <figure class="gallery-frame">
                     <img class="gallery-image" data-gallery-image alt="">
                     <figcaption class="gallery-caption" data-gallery-caption></figcaption>
                     <p class="gallery-fallback" data-gallery-fallback hidden></p>
                 </figure>
-                <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-next aria-label="Nächstes Bild">&#8250;</button>
+                <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-next aria-label="Nächstes Bild">›</button>
             </div>
             <div class="gallery-thumbs" data-gallery-thumbs aria-label="Bildauswahl"></div>
         </section>
     </div>
 
     <footer class="site-footer">
-        <p>&copy; 2026 ContainerRent Varna. Alle Rechte vorbehalten.</p>
+        <p>© 2026 ContainerRent Varna. Alle Rechte vorbehalten.</p>
     </footer>
 
     <script>
