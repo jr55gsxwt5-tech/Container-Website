@@ -322,8 +322,9 @@ nav {
     text-transform: uppercase;
 }
 
+
 .hero h1 {
-    font-size: clamp(3.2rem, 1vw, 8.2rem);
+    font-size: clamp(2.2rem, 8vw, 8.2rem);
     font-weight: 900;
     letter-spacing: 0;
     line-height: 0.9;
@@ -331,30 +332,40 @@ nav {
 }
 
 .hero-copy {
-    color: rgba(255, 255, 255, 0.88);
-    font-size: clamp(1.05rem, 2.2vw, 1.36rem);
-    margin-top: 26px;
-    max-width: 660px;
-}
-
-.hero-actions,
-.contact-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 30px;
+    font-size: 1.36rem;
 }
 
 .button {
-    align-items: center;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    display: inline-flex;
-    font-weight: 850;
-    justify-content: center;
-    min-height: 48px;
     padding: 13px 20px;
-    transition: box-shadow 180ms ease, transform 180ms ease, background 180ms ease, color 180ms ease;
+    font-size: 1rem;
+}
+@media (max-width: 620px) {
+    .hero {
+        min-height: auto;
+        padding: 90px 20px 40px;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+        line-height: 1.1;
+    }
+
+    .hero-copy {
+        font-size: 0.95rem;
+        margin-top: 16px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .hero-metrics {
+        grid-template-columns: 1fr;
+    }
 }
 
 .button:hover,
@@ -1236,7 +1247,8 @@ cite {
     }
 
     .hero h1 {
-        font-size: clamp(3rem, 17vw, 5rem);
+    font-size: clamp(1.8rem, 8vw, 6rem);
+    line-height: 1.1;
     }
 
     .hero-metrics,
