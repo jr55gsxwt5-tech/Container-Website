@@ -275,7 +275,7 @@ nav {
     align-items: end;
     background-image:
         linear-gradient(115deg, rgba(10, 18, 16, 0.86) 0%, rgba(10, 18, 16, 0.62) 46%, rgba(10, 18, 16, 0.22) 100%),
-        url("img/bild.jpg");
+        url("bild.jpg");
     background-position: center;
     background-size: cover;
     color: var(--white);
