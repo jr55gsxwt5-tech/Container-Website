@@ -311,43 +311,7 @@
         <p>© 2026 ContainerRent Varna. Alle Rechte vorbehalten.</p>
     </footer>
 
-    <script>
-        const header = document.querySelector('[data-elevate]');
-        const toggle = document.querySelector('.nav-toggle');
-        const nav = document.querySelector('.site-nav');
-        const revealItems = document.querySelectorAll('.reveal');
-
-        const setHeaderState = () => {
-            header.classList.toggle('is-scrolled', window.scrollY > 12);
-        };
-
-        toggle.addEventListener('click', () => {
-            const isOpen = nav.classList.toggle('is-open');
-            toggle.classList.toggle('is-open', isOpen);
-            toggle.setAttribute('aria-expanded', String(isOpen));
-        });
-
-        nav.addEventListener('click', (event) => {
-            if (event.target.matches('a:not(.lang-menu a)')) {
-                nav.classList.remove('is-open');
-                toggle.classList.remove('is-open');
-                toggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.18 });
-
-        revealItems.forEach((item) => revealObserver.observe(item));
-        setHeaderState();
-        window.addEventListener('scroll', setHeaderState, { passive: true });
-    </script>
+    
     <script type="module" src="viewer.js"></script>
 
     <!-- ÜBERSETZUNGSSCRIPT MIT KLICK-MODUS UND BULGARISCH -->
@@ -571,66 +535,7 @@
             }
         };
 
-        // Funktion zum Wechseln der Sprache in den Texten
-        function changeLanguage(lang) {
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
-            document.documentElement.lang = lang;
-        }
-
-        // Funktion zum Aktualisieren des sichtbaren Flaggen-Buttons
-        function updateDropdownUI(lang) {
-            const selectedUI = document.getElementById("selected-lang");
-            selectedUI.textContent = lang;
-            selectedUI.className = `selected-lang ${lang}`;
-        }
-
-        // KLICK-MODUS FÜR DAS DROPDOWN-MENÜ
-        const langBtn = document.getElementById("selected-lang");
-        const langDropdown = document.getElementById("lang-dropdown");
-
-        // Öffnen/Schließen bei Klick auf den aktuellen Sprach-Button
-        langBtn.addEventListener("click", (e) => {
-            e.stopPropagation(); // Verhindert sofortiges Schließen durch den Document-Klick
-            langDropdown.classList.toggle("show");
-        });
-
-        // Schließen, wenn man irgendwo anders auf die Seite klickt
-        document.addEventListener("click", () => {
-            langDropdown.classList.remove("show");
-        });
-
-        // Event-Listener für die Auswahl einer Sprache im Dropdown
-        const langLinks = document.querySelectorAll('.lang-menu ul li a');
-        langLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                
-                const selectedLang = e.target.getAttribute('data-value');
-                
-                // 1. Sprache speichern
-                localStorage.setItem("lang", selectedLang);
-                
-                // 2. Dropdown UI anpassen und Menü schließen
-                updateDropdownUI(selectedLang);
-                langDropdown.classList.remove("show");
-                
-                // 3. Texte übersetzen
-                changeLanguage(selectedLang);
-            });
-        });
-
-        // Beim Laden der Seite ausführen
-        window.addEventListener("DOMContentLoaded", () => {
-            const savedLang = localStorage.getItem("lang") || "de";
-            updateDropdownUI(savedLang);
-            changeLanguage(savedLang);
-        });
+       
     </script>
 </body>
 </html>

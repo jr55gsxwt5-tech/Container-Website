@@ -111,8 +111,8 @@ nav {
             border: 1px solid #f2f0f7;
             position: absolute;
             top: 100%;
-            right: 100%;
-            left: 0%;
+            right: 0%;
+            left: auto;
             width: 150px;
             border-radius: 8px;
             box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
@@ -315,7 +315,7 @@ nav {
 
 .eyebrow {
     color: var(--orange);
-    font-size: 0.78rem;
+    font-size: 1.78rem;
     font-weight: 900;
     letter-spacing: 0;
     margin-bottom: 12px;
@@ -354,6 +354,14 @@ nav {
         font-size: 0.95rem;
         margin-top: 16px;
     }
+
+   .hero-actions a {
+        flex: 1 1 auto;
+        font-size: clamp(12px, 3.5vw, 16px);
+        padding: 10px 12px;
+        white-space: nowrap;
+    }
+
 
     .hero-actions {
         flex-direction: column;
@@ -448,6 +456,14 @@ nav {
 .section-heading {
     max-width: 760px;
 }
+
+.contact-actions a {
+        flex: 1 1 auto;
+        font-size: clamp(12px, 3.5vw, 16px);
+        padding: 10px 12px;
+        white-space: nowrap;
+        text-align: center;
+    }
 
 .section-heading h2,
 .contact-content h2 {

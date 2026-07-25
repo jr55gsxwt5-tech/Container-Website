@@ -53,7 +53,46 @@ const modelMaterials = {
         accent: 0xff8a3d,
     },
 };
+// haupt-Menü schließen, wenn außerhalb geklickt wird
 
+document.addEventListener("click", function (event) {
+    const nav = document.querySelector(".site-nav");
+    const navToggle = document.querySelector(".nav-toggle");
+    const langMenu = document.querySelector(".lang-menu");
+    const dropdown = document.querySelector(".lang-menu ul");
+
+    // Nur auf Handy
+    if (window.innerWidth > 620) return;
+
+    // Wenn außerhalb von Menü und Hamburger geklickt wird
+    if (
+        !nav.contains(event.target) &&
+        !navToggle.contains(event.target)
+    ) {
+        nav.classList.remove("is-open");      // Navigation schließen
+        navToggle.classList.remove("is-open"); // Hamburger zurücksetzen
+        dropdown.classList.remove("show");     // Sprachmenü schließen
+    }
+});
+
+// Sprachmenü schließen, wenn ein Link geklickt wird
+document.querySelectorAll(".lang-menu ul li a").forEach(link => {
+    link.addEventListener("click", function () {
+        if (window.innerWidth <= 620) {
+
+            // Sprachmenü schließen
+            document.querySelector(".lang-menu ul").classList.remove("show");
+
+            // Navigationsmenü schließen
+            document.querySelector(".site-nav").classList.remove("is-open");
+
+            // Hamburger-Button zurücksetzen
+            document.querySelector(".nav-toggle").classList.remove("is-open");
+        }
+    });
+});
+
+// Menü umschalten
 const ensureViewer = () => {
     if (renderer) {
         return;
@@ -492,3 +531,102 @@ window.addEventListener("beforeunload", () => {
         resizeObserver.disconnect();
     }
 });
+
+
+ const header = document.querySelector('[data-elevate]');
+        const toggle = document.querySelector('.nav-toggle');
+        const nav = document.querySelector('.site-nav');
+        const revealItems = document.querySelectorAll('.reveal');
+
+        const setHeaderState = () => {
+            header.classList.toggle('is-scrolled', window.scrollY > 12);
+        };
+
+        toggle.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('is-open');
+            toggle.classList.toggle('is-open', isOpen);
+            toggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        nav.addEventListener('click', (event) => {
+            if (event.target.matches('a:not(.lang-menu a)')) {
+                nav.classList.remove('is-open');
+                toggle.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.18 });
+
+        revealItems.forEach((item) => revealObserver.observe(item));
+        setHeaderState();
+        window.addEventListener('scroll', setHeaderState, { passive: true });
+
+
+         // Funktion zum Wechseln der Sprache in den Texten
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            document.documentElement.lang = lang;
+        }
+
+        // Funktion zum Aktualisieren des sichtbaren Flaggen-Buttons
+        function updateDropdownUI(lang) {
+            const selectedUI = document.getElementById("selected-lang");
+            selectedUI.textContent = lang;
+            selectedUI.className = `selected-lang ${lang}`;
+        }
+
+        // KLICK-MODUS FÜR DAS DROPDOWN-MENÜ
+        const langBtn = document.getElementById("selected-lang");
+        const langDropdown = document.getElementById("lang-dropdown");
+
+        // Öffnen/Schließen bei Klick auf den aktuellen Sprach-Button
+        langBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // Verhindert sofortiges Schließen durch den Document-Klick
+            langDropdown.classList.toggle("show");
+        });
+
+        // Schließen, wenn man irgendwo anders auf die Seite klickt
+        document.addEventListener("click", () => {
+            langDropdown.classList.remove("show");
+        });
+
+        // Event-Listener für die Auswahl einer Sprache im Dropdown
+        const langLinks = document.querySelectorAll('.lang-menu ul li a');
+        langLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                
+                const selectedLang = e.target.getAttribute('data-value');
+                
+                // 1. Sprache speichern
+                localStorage.setItem("lang", selectedLang);
+                
+                // 2. Dropdown UI anpassen und Menü schließen
+                updateDropdownUI(selectedLang);
+                langDropdown.classList.remove("show");
+                
+                // 3. Texte übersetzen
+                changeLanguage(selectedLang);
+            });
+        });
+
+        // Beim Laden der Seite ausführen
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedLang = localStorage.getItem("lang") || "de";
+            updateDropdownUI(savedLang);
+            changeLanguage(savedLang);
+        });
