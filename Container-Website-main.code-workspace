@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "Container-Website-main"
+		},
+		{
+			"path": "Container Website"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Container Website",
+		"liveServer.settings.port": 5501
+	}
+}
