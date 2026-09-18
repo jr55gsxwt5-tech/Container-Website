@@ -450,8 +450,6 @@ nav {
 }
 
 .section {
-    contain-intrinsic-size: 1px 700px;
-    content-visibility: auto;
     padding: clamp(70px, 10vw, 120px) clamp(18px, 6vw, 88px);
 }
 
@@ -728,202 +726,6 @@ cite {
     color: rgba(255, 255, 255, 0.75);
 }
 
-.reviews-panel {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 18px;
-    display: grid;
-    gap: clamp(24px, 5vw, 64px);
-    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
-    margin-top: 18px;
-    padding: clamp(22px, 4vw, 36px);
-}
-
-.reviews-panel h3 {
-    color: var(--white);
-    font-size: clamp(1.35rem, 2.5vw, 2rem);
-    line-height: 1.1;
-}
-
-.review-summary {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 22px;
-}
-
-.review-summary strong {
-    color: var(--white);
-    font-size: 2.15rem;
-    line-height: 1;
-}
-
-.review-summary > span:last-child {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.88rem;
-    font-weight: 800;
-}
-
-.stars {
-    color: var(--orange);
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-}
-
-.review-note {
-    color: rgba(255, 255, 255, 0.72);
-    margin-top: 8px;
-}
-
-.review-source-link {
-    color: var(--orange);
-    display: inline-flex;
-    font-size: 0.86rem;
-    font-weight: 900;
-    margin-top: 16px;
-    transition: color 180ms ease, transform 180ms ease;
-}
-
-.review-source-link:hover,
-.review-source-link:focus-visible {
-    color: var(--white);
-    transform: translateX(3px);
-}
-
-.reviews-carousel {
-    min-width: 0;
-}
-
-.review-viewport {
-    overflow: hidden;
-}
-
-.review-track {
-    display: flex;
-    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
-}
-
-.review-card {
-    background: var(--white);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 14px;
-    color: var(--ink);
-    display: flex;
-    flex: 0 0 100%;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 246px;
-    opacity: 0.82;
-    padding: clamp(22px, 3vw, 30px);
-}
-
-.review-card-top {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-.review-card-top > span:last-child {
-    color: var(--muted);
-    font-size: 0.76rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.review-card blockquote {
-    border: 0;
-    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
-    margin: 24px 0;
-    padding: 0;
-}
-
-.review-card cite {
-    color: var(--green);
-    margin-top: auto;
-}
-
-.review-author {
-    align-items: center;
-    display: flex;
-    gap: 11px;
-}
-
-.review-author cite {
-    margin-top: 0;
-}
-
-.review-avatar {
-    align-items: center;
-    background: linear-gradient(135deg, var(--green), var(--mint));
-    border: 2px solid rgba(15, 95, 79, 0.12);
-    border-radius: 50%;
-    color: var(--white);
-    display: inline-flex;
-    flex: 0 0 38px;
-    font-size: 0.75rem;
-    font-weight: 900;
-    height: 38px;
-    justify-content: center;
-    letter-spacing: 0.02em;
-    width: 38px;
-}
-
-.review-controls {
-    align-items: center;
-    display: flex;
-    gap: 14px;
-    justify-content: space-between;
-    margin-top: 14px;
-}
-
-.review-arrow {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: var(--white);
-    cursor: pointer;
-    display: inline-flex;
-    font-size: 1.4rem;
-    height: 42px;
-    justify-content: center;
-    line-height: 1;
-    transition: background 180ms ease, transform 180ms ease;
-    width: 42px;
-}
-
-.review-arrow:hover,
-.review-arrow:focus-visible {
-    background: var(--orange);
-    color: var(--ink);
-    transform: translateY(-2px);
-}
-
-.review-dots {
-    display: flex;
-    gap: 7px;
-}
-
-.review-dot {
-    background: rgba(255, 255, 255, 0.3);
-    border: 0;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 8px;
-    padding: 0;
-    transition: background 180ms ease, transform 180ms ease;
-    width: 8px;
-}
-
-.review-dot.is-active {
-    background: var(--orange);
-    transform: scale(1.35);
-}
-
 .hours {
     display: grid;
     gap: 12px;
@@ -1079,7 +881,7 @@ cite {
 
 .spin-toggle {
     align-items: center;
-    background: var(--green);
+    background: #0015ff;
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 8px;
     cursor: pointer;
@@ -1092,12 +894,12 @@ cite {
 
 .spin-toggle:hover,
 .spin-toggle:focus-visible {
-    background: var(--mint);
+    background: #fab300;
     transform: translateY(-2px);
 }
 
 .spin-toggle.is-paused {
-    background: var(--orange);
+    background: #fab300;
 }
 
 .spin-icon {
@@ -1509,10 +1311,6 @@ cite {
     .gallery-image,
     .gallery-fallback {
         height: min(52vh, 460px);
-    }
-
-    .reviews-panel {
-        grid-template-columns: 1fr;
     }
 }
 

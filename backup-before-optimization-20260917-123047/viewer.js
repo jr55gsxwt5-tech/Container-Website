@@ -22,12 +22,6 @@ const closeGalleryButtons = document.querySelectorAll("[data-close-gallery]");
 const galleryPrev = document.querySelector("[data-gallery-prev]");
 const galleryNext = document.querySelector("[data-gallery-next]");
 const galleryThumbs = document.querySelector("[data-gallery-thumbs]");
-const reviewCarousel = document.querySelector("[data-reviews-carousel]");
-const reviewTrack = document.querySelector("[data-review-track]");
-const reviewSlides = document.querySelectorAll("[data-review-slide]");
-const reviewPrev = document.querySelector("[data-review-prev]");
-const reviewNext = document.querySelector("[data-review-next]");
-const reviewDots = document.querySelector("[data-review-dots]");
 
 let renderer;
 let scene;
@@ -42,9 +36,6 @@ let galleryImages = [];
 let galleryIndex = 0;
 let galleryPointerStartX = null;
 let viewerRunning = false;
-let reviewIndex = 0;
-const modelCache = new Map();
-const fallbackCache = new Map();
 
 const modelMaterials = {
     Office: {
@@ -112,11 +103,11 @@ const ensureViewer = () => {
         canvas,
         antialias: true,
         alpha: true,
-        preserveDrawingBuffer: false,
+        preserveDrawingBuffer: true,
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.shadowMap.enabled = false;
+    renderer.shadowMap.enabled = true;
 
     scene = new THREE.Scene();
 
@@ -138,6 +129,7 @@ const ensureViewer = () => {
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
     keyLight.position.set(5, 7, 4);
+    keyLight.castShadow = true;
     scene.add(keyLight);
 
     const fillLight = new THREE.DirectionalLight(0x26c89f, 1.2);
@@ -156,6 +148,7 @@ const ensureViewer = () => {
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.80;
+    ground.receiveShadow = true;
     scene.add(ground);
 
     resizeObserver = new ResizeObserver(resizeRenderer);
@@ -174,6 +167,17 @@ const resizeRenderer = () => {
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+};
+
+const animate = () => {
+    animationId = requestAnimationFrame(animate);
+
+    if (!modal || modal.hidden) {
+        return;
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
 };
 
 const animate = () => {
@@ -211,42 +215,17 @@ const clearActiveModel = () => {
     }
 
     scene.remove(activeModel);
+    activeModel.traverse((object) => {
+        if (object.geometry) {
+            object.geometry.dispose();
+        }
+        if (object.material) {
+            const materials = Array.isArray(object.material) ? object.material : [object.material];
+            materials.forEach((material) => material.dispose());
+        }
+    });
     activeModel = null;
 };
-
-const showReview = (nextIndex) => {
-    if (!reviewSlides.length || !reviewTrack) {
-        return;
-    }
-
-    reviewIndex = (nextIndex + reviewSlides.length) % reviewSlides.length;
-    reviewTrack.style.transform = `translateX(-${reviewIndex * 100}%)`;
-
-    reviewSlides.forEach((slide, index) => {
-        const isActive = index === reviewIndex;
-        slide.classList.toggle("is-active", isActive);
-        slide.setAttribute("aria-hidden", String(!isActive));
-    });
-
-    Array.from(reviewDots?.children ?? []).forEach((dot, index) => {
-        const isActive = index === reviewIndex;
-        dot.classList.toggle("is-active", isActive);
-        dot.setAttribute("aria-current", isActive ? "true" : "false");
-    });
-};
-
-reviewSlides.forEach((slide, index) => {
-    const dot = document.createElement("button");
-    dot.className = "review-dot";
-    dot.type = "button";
-    dot.setAttribute("aria-label", `Bewertung ${index + 1} anzeigen`);
-    dot.addEventListener("click", () => showReview(index));
-    reviewDots?.append(dot);
-});
-
-reviewPrev?.addEventListener("click", () => showReview(reviewIndex - 1));
-reviewNext?.addEventListener("click", () => showReview(reviewIndex + 1));
-showReview(0);
 
 const createBox = (size, position, color, metalness = 0.06) => {
     const mesh = new THREE.Mesh(
@@ -346,10 +325,7 @@ const frameModel = (model) => {
 
 const showFallback = (type) => {
     clearActiveModel();
-    if (!fallbackCache.has(type)) {
-        fallbackCache.set(type, createContainerFallback(type));
-    }
-    activeModel = fallbackCache.get(type).clone();
+    activeModel = createContainerFallback(type);
     scene.add(activeModel);
     status.textContent = "Demo-Modell";
     frameModel(activeModel);
@@ -359,23 +335,14 @@ const loadModel = ({ modelPath, type }) => {
     clearActiveModel();
     status.textContent = "Modell wird geladen";
 
-    if (modelCache.has(modelPath)) {
-        activeModel = modelCache.get(modelPath).clone();
-        scene.add(activeModel);
-        status.textContent = "Blender-Modell";
-        frameModel(activeModel);
-        return;
-    }
-
     loader.load(
         modelPath,
         (gltf) => {
-            modelCache.set(modelPath, gltf.scene);
-            activeModel = gltf.scene.clone();
+            activeModel = gltf.scene;
             activeModel.traverse((object) => {
                 if (object.isMesh) {
-                    object.castShadow = false;
-                    object.receiveShadow = false;
+                    object.castShadow = true;
+                    object.receiveShadow = true;
                 }
             });
             scene.add(activeModel);
@@ -475,8 +442,6 @@ const renderGalleryThumbs = () => {
         const thumbImage = document.createElement("img");
         thumbImage.src = src;
         thumbImage.alt = "";
-        thumbImage.loading = "lazy";
-        thumbImage.decoding = "async";
         thumbImage.addEventListener("error", () => {
             thumbImage.remove();
             const fallback = document.createElement("span");
@@ -640,16 +605,11 @@ window.addEventListener("beforeunload", () => {
 
          // Funktion zum Wechseln der Sprache in den Texten
         function changeLanguage(lang) {
-            const elements = document.querySelectorAll('[data-i18n], [data-i18n-aria-label]');
+            const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang] && translations[lang][key]) {
                     el.textContent = translations[lang][key];
-                }
-
-                const ariaKey = el.getAttribute('data-i18n-aria-label');
-                if (translations[lang] && translations[lang][ariaKey]) {
-                    el.setAttribute('aria-label', translations[lang][ariaKey]);
                 }
             });
             document.documentElement.lang = lang;
@@ -660,14 +620,6 @@ window.addEventListener("beforeunload", () => {
             const selectedUI = document.getElementById("selected-lang");
             selectedUI.textContent = lang;
             selectedUI.className = `selected-lang ${lang}`;
-        }
-
-        function getBrowserLanguage() {
-            const browserLanguage = (navigator.language || "").toLowerCase();
-            const language = browserLanguage.split("-")[0];
-            const supportedLanguages = ["de", "en", "ru", "bg"];
-
-            return supportedLanguages.includes(language) ? language : "de";
         }
 
         // KLICK-MODUS FÜR DAS DROPDOWN-MENÜ
@@ -707,10 +659,7 @@ window.addEventListener("beforeunload", () => {
 
         // Beim Laden der Seite ausführen
         window.addEventListener("DOMContentLoaded", () => {
-            const savedLang = localStorage.getItem("lang");
-            const supportedLanguages = ["de", "en", "ru", "bg"];
-            const initialLang = supportedLanguages.includes(savedLang) ? savedLang : getBrowserLanguage();
-
-            updateDropdownUI(initialLang);
-            changeLanguage(initialLang);
+            const savedLang = localStorage.getItem("lang") || "de";
+            updateDropdownUI(savedLang);
+            changeLanguage(savedLang);
         });
