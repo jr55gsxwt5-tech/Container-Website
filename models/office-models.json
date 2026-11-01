@@ -1,0 +1,108 @@
+{
+  "units": "metres",
+  "confirmed": "length and width",
+  "estimatedHeight": 2.6,
+  "basis": "Offer illustrations; oak floor and white interior from supplied photos. Unseen faces are assumed plain.",
+  "models": [
+    {
+      "length": 3,
+      "width": 2.4,
+      "height": 2.6,
+      "reference": "bilder/buero/buero-3m.png",
+      "door": {
+        "x": 0.66,
+        "width": 0.92,
+        "height": 2.13,
+        "bottom": 0.15,
+        "hinge": "right"
+      },
+      "windows": [
+        {
+          "x": -0.64,
+          "width": 0.94,
+          "height": 1.14,
+          "bottom": 1.01,
+          "panes": 1
+        }
+      ],
+      "file": "models/buero-3m.glb",
+      "bytes": 894592,
+      "detailCount": 475,
+      "meshCount": 23,
+      "boundingBoxMetres": {
+        "x": 3,
+        "y": 2.5999999076128004,
+        "z": 2.4520000219345093
+      }
+    },
+    {
+      "length": 4,
+      "width": 2.4,
+      "height": 2.6,
+      "reference": "bilder/buero/buero-4m.png",
+      "door": {
+        "x": -1.25,
+        "width": 0.86,
+        "height": 2.13,
+        "bottom": 0.15,
+        "hinge": "left"
+      },
+      "windows": [
+        {
+          "x": 0.55,
+          "width": 1.62,
+          "height": 1.06,
+          "bottom": 1.06,
+          "panes": 2
+        }
+      ],
+      "file": "models/buero-4m.glb",
+      "bytes": 995344,
+      "detailCount": 571,
+      "meshCount": 23,
+      "boundingBoxMetres": {
+        "x": 4,
+        "y": 2.5999999076128004,
+        "z": 2.4520000219345093
+      }
+    },
+    {
+      "length": 6,
+      "width": 2.4,
+      "height": 2.6,
+      "reference": "bilder/buero/buero-6m.png",
+      "door": {
+        "x": -0.48,
+        "width": 0.91,
+        "height": 2.13,
+        "bottom": 0.15,
+        "hinge": "right"
+      },
+      "windows": [
+        {
+          "x": -1.94,
+          "width": 1.02,
+          "height": 1.05,
+          "bottom": 1.03,
+          "panes": 1
+        },
+        {
+          "x": 1.36,
+          "width": 1.3,
+          "height": 1.13,
+          "bottom": 0.99,
+          "panes": 1
+        }
+      ],
+      "file": "models/buero-6m.glb",
+      "bytes": 1178732,
+      "detailCount": 762,
+      "meshCount": 23,
+      "boundingBoxMetres": {
+        "x": 6,
+        "y": 2.5999999076128004,
+        "z": 2.4520000219345093
+      }
+    }
+  ]
+}

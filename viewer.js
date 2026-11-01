@@ -3,6 +3,7 @@ import { t, initLanguage, setLanguage } from "./i18n.js";
 let THREE;
 let OrbitControls;
 let GLTFLoader;
+let RoomEnvironment;
 let libraryPromise;
 
 const modal = document.querySelector("[data-model-modal]");
@@ -34,6 +35,7 @@ const reviewDots = document.querySelector("[data-review-dots]");
 
 let renderer;
 let scene;
+let ground;
 let camera;
 let controls;
 let loader;
@@ -77,13 +79,14 @@ const ensureViewer = async () => {
         import("three"),
         import("three/addons/controls/OrbitControls.js"),
         import("three/addons/loaders/GLTFLoader.js"),
+        import("three/addons/environments/RoomEnvironment.js"),
     ]).catch((error) => {
         libraryPromise = null;
         throw error;
     });
     const modules = await libraryPromise;
     if (renderer) return;
-    [THREE, { OrbitControls }, { GLTFLoader }] = modules;
+    [THREE, { OrbitControls }, { GLTFLoader }, { RoomEnvironment }] = modules;
 
     renderer = new THREE.WebGLRenderer({
         canvas,
@@ -93,9 +96,17 @@ const ensureViewer = async () => {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.shadowMap.enabled = false;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     scene = new THREE.Scene();
+    const environment = new RoomEnvironment();
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(environment, 0.04).texture;
+    environment.dispose();
+    pmrem.dispose();
 
     camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
     camera.position.set(6, 4, 6);
@@ -110,18 +121,29 @@ const ensureViewer = async () => {
 
     loader = new GLTFLoader();
 
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e467a, 1.5);
+    const hemiLight = new THREE.HemisphereLight(0xf5f9ff, 0x75879b, 1.25);
     scene.add(hemiLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
     keyLight.position.set(5, 7, 4);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.camera.left = -5;
+    keyLight.shadow.camera.right = 5;
+    keyLight.shadow.camera.top = 5;
+    keyLight.shadow.camera.bottom = -5;
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 25;
+    keyLight.shadow.normalBias = 0.018;
+    keyLight.shadow.bias = -0.00015;
+    keyLight.shadow.radius = 3;
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x93c5fd, 1.2);
+    const fillLight = new THREE.DirectionalLight(0xbcd6f1, 0.65);
     fillLight.position.set(-4, 3, -5);
     scene.add(fillLight);
 
-    const ground = new THREE.Mesh(
+    ground = new THREE.Mesh(
         new THREE.CircleGeometry(4.8, 96),
         new THREE.MeshStandardMaterial({
             color: 0x173b68,
@@ -133,6 +155,7 @@ const ensureViewer = async () => {
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.80;
+    ground.receiveShadow = true;
     scene.add(ground);
 
     resizeObserver = new ResizeObserver(resizeRenderer);
@@ -315,7 +338,7 @@ const fitCameraToModel = () => {
     const verticalFov = THREE.MathUtils.degToRad(camera.fov);
     const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
     const distance = sphere.radius / Math.sin(Math.min(verticalFov, horizontalFov) / 2) * 1.12;
-    const direction = new THREE.Vector3(1, 0.65, 1).normalize();
+    const direction = new THREE.Vector3(0.8, 0.55, 1.7).normalize();
     camera.position.copy(sphere.center).addScaledVector(direction, distance);
     controls.target.copy(sphere.center);
     controls.minDistance = sphere.radius * 1.25;
@@ -333,6 +356,8 @@ const frameModel = (model) => {
     model.scale.multiplyScalar(scale);
     model.position.sub(center.multiplyScalar(scale));
     model.position.y += 0.12;
+    // Keep the ground below each model, including the taller 3 m proportions.
+    ground.position.y = new THREE.Box3().setFromObject(model).min.y - 0.018;
 
     fitCameraToModel();
 };
@@ -352,11 +377,13 @@ const loadModel = ({ modelPath, type }) => {
     const requestId = ++modelRequestId;
     clearActiveModel();
     status.textContent = t("model-loading");
+    modal.dataset.modelState = "loading";
 
     if (modelCache.has(modelPath)) {
         activeModel = modelCache.get(modelPath).clone();
         scene.add(activeModel);
-        status.textContent = t("model-ready");
+        status.textContent = t(type === "Office" ? "model-office-ready" : "model-ready");
+        modal.dataset.modelState = "ready";
         frameModel(activeModel);
         return;
     }
@@ -368,25 +395,37 @@ const loadModel = ({ modelPath, type }) => {
                 return;
             }
 
-            modelCache.set(modelPath, gltf.scene);
-            activeModel = gltf.scene.clone();
-            activeModel.traverse((object) => {
+            gltf.scene.traverse((object) => {
                 if (object.isMesh) {
-                    object.castShadow = false;
-                    object.receiveShadow = false;
+                    object.castShadow = !object.material.transparent;
+                    object.receiveShadow = !object.material.transparent;
+                    object.material.envMapIntensity = 0.55;
                 }
             });
+            modelCache.set(modelPath, gltf.scene);
+            activeModel = gltf.scene.clone();
             scene.add(activeModel);
-            status.textContent = t("model-ready");
+            status.textContent = t(type === "Office" ? "model-office-ready" : "model-ready");
+            modal.dataset.modelState = "ready";
             frameModel(activeModel);
         },
         undefined,
         () => {
             if (requestId === modelRequestId) {
-                showFallback(type);
+                if (type === "Office") {
+                    status.textContent = t("model-error");
+                    modal.dataset.modelState = "error";
+                } else {
+                    showFallback(type);
+                }
             }
         },
     );
+};
+
+const updateModelTitle = () => {
+    title.textContent = [lastFocusedElement?.dataset.title, lastFocusedElement?.dataset.dimensions]
+        .filter(Boolean).join(" · ") || "Container";
 };
 
 const openPreview = async (button) => {
@@ -395,8 +434,9 @@ const openPreview = async (button) => {
     galleryModal.hidden = true;
     modal.hidden = false;
     updateModalOpenState();
-    title.textContent = button.dataset.title ?? "Container";
+    updateModelTitle();
     status.textContent = t("model-loading");
+    modal.dataset.modelState = "loading";
     spinToggle.disabled = true;
     modal.querySelector(".modal-close")?.focus();
 
@@ -412,6 +452,7 @@ const openPreview = async (button) => {
     } catch {
         if (openingRequest === modelRequestId && !modal.hidden) {
             status.textContent = t("model-error");
+            modal.dataset.modelState = "error";
         }
     }
 };
@@ -694,7 +735,12 @@ document.addEventListener('languagechange', () => {
         renderGalleryThumbs();
         showGalleryImage(galleryIndex);
     }
-    if (!modal.hidden) title.textContent = lastFocusedElement?.dataset.title || 'Container';
+    if (!modal.hidden) {
+        updateModelTitle();
+        if (modal.dataset.modelState === "ready") {
+            status.textContent = t(lastFocusedElement?.dataset.type === "Office" ? "model-office-ready" : "model-ready");
+        }
+    }
 });
 
 initLanguage();
