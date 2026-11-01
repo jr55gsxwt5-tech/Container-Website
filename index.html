@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#17221f">
-    <meta name="description" content="ContainerRent Varna vermietet moderne Bürocontainer, Lagercontainer und flexible Container-Lösungen in Bulgarien.">
-    <title>ContainerRent Varna | Moderne Containervermietung</title>
-    <link rel="preconnect" href="https://images.unsplash.com">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Bürocontainer, Lagercontainer und flexible Containerlösungen in Varna. Echte Bilder, 3D-Vorschau und persönliche Beratung bei Iliya Chobanov.">
+    <title>Büro- und Lagercontainer mieten | ContainerRent Varna</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Büro- und Lagercontainer mieten | ContainerRent Varna">
+    <meta property="og:description" content="Containerlösungen in Varna. Persönliche Beratung bei Iliya Chobanov.">
     <link rel="stylesheet" href="style.css">
-   
+
     <script type="importmap">
         {
             "imports": {
@@ -18,32 +20,33 @@
         }
     </script>
 
-   
+
 </head>
 <body>
+    <a class="skip-link" href="#main-content" data-i18n="skip-content">Zum Inhalt</a>
     <header class="site-header" data-elevate>
-        <a class="brand" href="#start" aria-label="ContainerRent Varna Startseite">
+        <a class="brand" href="#start" aria-label="ContainerRent Varna Startseite" data-i18n-aria-label="brand-label">
             <span class="brand-mark">CR</span>
             <span>ContainerRent Varna</span>
         </a>
 
-        <button class="nav-toggle" type="button" aria-label="Navigation öffnen" aria-expanded="false">
+        <button class="nav-toggle" type="button" aria-label="Navigation öffnen" data-i18n-aria-label="nav-open" aria-controls="site-navigation" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
         </button>
 
-        <nav class="site-nav" aria-label="Hauptnavigation">
+        <nav class="site-nav" id="site-navigation" aria-label="Hauptnavigation" data-i18n-aria-label="nav-label">
             <a href="#leistungen" data-i18n="nav-leistungen">Leistungen</a>
             <a href="#vorteile" data-i18n="nav-vorteile">Vorteile</a>
-            <a href="#team" data-i18n="nav-team">Team</a>
+            <a href="#fragen" data-i18n="nav-faq">Fragen &amp; Antworten</a>
             <a href="#kontakt" data-i18n="nav-kontakt">Kontakt</a>
 
             <!-- SPRACH-MENÜ MIT FLAGGEN (KLICK-MODUS) -->
             <div class="lang-menu">
                 <!-- Der Button, auf den geklickt wird -->
-                <div class="selected-lang de" id="selected-lang">DE</div>
-                
+                <button class="selected-lang de" id="selected-lang" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="lang-dropdown">DE</button>
+
                 <!-- Das Dropdown, das sich öffnet -->
                 <ul id="lang-dropdown">
                     <li><a href="#" class="de" data-value="de">Deutsch</a></li>
@@ -55,122 +58,97 @@
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero" id="start" aria-labelledby="hero-title">
             <div class="hero-overlay"></div>
-            <div class="hero-content reveal">
-                <p class="eyebrow" data-i18n="hero-eyebrow">Containervermietung in Varna, Bulgarien</p>
-                <h1 id="hero-title" data-i18n="hero-title">ContainerRent Varna</h1>
-                <br>
-                <p class="hero-copy" data-i18n="hero-copy">
-                    Moderne Bürocontainer, Lagercontainer und flexible Raumlösungen für Baustellen,
-                    Unternehmen und private Projekte.
-                </p>
-                <br>
+            <div class="hero-content">
+                <p class="eyebrow" data-i18n="hero-eyebrow">ContainerRent Varna · Bulgarien</p>
+                <h1 id="hero-title" data-i18n="hero-title">Mehr Raum für dein Vorhaben.</h1>
+                <p class="hero-copy" data-i18n="hero-copy">Büro- und Lagercontainer in Varna mieten. Für deine Arbeit, dein Material und alles, was Platz braucht. Iliya berät dich persönlich.</p>
                 <div class="hero-actions">
-                    <a class="button button-primary" href="tel:+359893660260" data-i18n="btn-call">Jetzt anrufen</a>
-                    <a class="button button-ghost" href="#leistungen" data-i18n="btn-offer">Angebot ansehen</a>
+                    <a class="button button-primary" href="#leistungen" data-i18n="btn-offer">Container ansehen</a>
+                    <a class="button button-ghost" href="tel:+359893660260" data-i18n="btn-call">Jetzt anrufen</a>
                 </div>
             </div>
-
-            <div class="hero-metrics reveal" aria-label="Kennzahlen">
-                <div>
-                    <strong>24h</strong>
-                    <span data-i18n="metric-response">Antwortzeit</span>
-                </div>
-                <div>
-                    <strong data-i18n="metric-days">7 Tage</strong>
-                    <span data-i18n="metric-available">Erreichbar</span>
-                </div>
-                <div>
-                    <strong>CONTAINEX</strong>
-                    <span data-i18n="metric-quality">Qualität</span>
-                </div>
+            <div class="hero-metrics" aria-label="Unser Angebot auf einen Blick" data-i18n-aria-label="hero-proofs-label">
+                <div><strong data-i18n="hero-proof-one">Büro &amp; Lager</strong><span data-i18n="hero-proof-one-detail">Passend zum Einsatz</span></div>
+                <div><strong data-i18n="hero-proof-two">Persönlich</strong><span data-i18n="hero-proof-two-detail">Direkt mit Iliya sprechen</span></div>
+                <div><strong data-i18n="hero-proof-three">Varna</strong><span data-i18n="hero-proof-three-detail">Standort in Bulgarien</span></div>
             </div>
         </section>
-
         <section class="section intro reveal" aria-labelledby="intro-title">
             <div class="section-heading">
-                <p class="eyebrow" data-i18n="intro-eyebrow">Schnell. Sauber. Flexibel.</p>
-                <h2 id="intro-title" data-i18n="intro-title">Container für jede Situation</h2>
+                <p class="eyebrow" data-i18n="intro-eyebrow">Raum, der zu dir passt</p>
+                <h2 id="intro-title" data-i18n="intro-title">Arbeiten. Lagern. Weiterdenken.</h2>
             </div>
-            <p data-i18n="intro-text">
-                Wir vermieten gepflegte Container von CONTAINEX und liefern robuste Lösungen für Arbeit,
-                Lagerung und Organisation. Der Standort in Varna macht kurze Wege und klare Absprachen möglich.
-            </p>
+            <p data-i18n="intro-text">Ob temporärer Arbeitsplatz oder Platz für Material: Wir helfen dir bei der Auswahl. Größe, Ausstattung, Mietdauer und die Möglichkeiten am gewünschten Standort klärst du direkt mit Iliya.</p>
         </section>
 
         <section class="section services" id="leistungen" aria-labelledby="services-title">
-            <div class="section-heading reveal">
-                <p class="eyebrow" data-i18n="nav-leistungen">Leistungen</p>
-                <h2 id="services-title" data-i18n="services-title">Was du mieten kannst</h2>
-            </div>
-
-            <div class="service-grid">
-                <article class="service-card reveal">
-                    <span class="service-icon">01</span>
-                    <h3 data-i18n="service-office-title">Bürocontainer</h3>
-                    <p data-i18n="service-office-desc">Helle, funktionale Arbeitsräume für Baustellen, Events oder temporäre Teams.</p>
-                    
-                    <div class="service-actions">
-                        <button class="preview-button" type="button"
-                         data-preview data-title="Bürocontainer"
-                         data-type="Office"
-                         data-model="models/buero-container.glb" data-i18n="btn-preview">
-                            Vorschau
-                        </button>
-                        <button class="preview-button image-button" type="button"
-                        data-gallery
-                        data-title="Bürocontainer"
-                        data-images="bilder/buero/buero.jpg|bilder/buero/buero2.jpg" data-i18n="btn-images">
-                            Bilder
-                        </button>
+            <div class="section-heading"><p class="eyebrow" data-i18n="nav-leistungen">Leistungen</p><h2 id="services-title" data-i18n="services-title">Welcher Container passt zu dir?</h2></div>
+            <p class="section-note" data-i18n="services-note">Preis und Verfügbarkeit hängen von deinem Bedarf ab. Frage deinen gewünschten Container direkt bei Iliya an.</p>
+            <div class="service-grid"><article class="service-card">
+                    <div class="service-photo"><img src="bilder/buero/buero.jpg" alt="Außenansicht eines weißen Bürocontainers mit Tür und Fenstern" data-i18n-alt="service-office-alt" loading="lazy" decoding="async" width="640" height="420"></div>
+                    <div class="service-card-content">
+                        <span class="service-number">01</span>
+                        <h3 data-i18n="service-office-title">Bürocontainer</h3>
+                        <p data-i18n="service-office-desc">Ein eigener Arbeitsbereich für Baustellen, Projekte oder ein temporäres Büro.</p>
+                        <dl class="service-facts">
+                            <div><dt data-i18n="service-use">Geeignet für</dt><dd data-i18n="service-office-use">Arbeit &amp; Projekte</dd></div>
+                            <div><dt data-i18n="service-details">Größe &amp; Ausstattung</dt><dd data-i18n="service-on-request">Persönlich abstimmen</dd></div>
+                        </dl>
+                        <div class="service-actions">
+                            <button class="preview-button" type="button" data-preview data-type="Office" data-product-key="service-office-title" data-model="models/buero-container.glb" data-i18n="btn-preview">3D ansehen</button>
+                            <button class="preview-button image-button" type="button" data-gallery data-type="Office" data-product-key="service-office-title" data-images="bilder/buero/buero.jpg|bilder/buero/buero2.jpg" data-i18n="btn-images">Bilder</button>
+                            <a class="service-inquiry" href="#kontakt" data-i18n="btn-inquire">Anfragen</a>
+                        </div>
                     </div>
                 </article>
-
-                <article class="service-card reveal">
-                    <span class="service-icon">02</span>
-                    <h3 data-i18n="service-storage-title">Lagercontainer</h3>
-                    <p data-i18n="service-storage-desc">Sichere Lagerfläche für Werkzeuge, Material, Waren oder private Gegenstände.</p>
-                    <div class="service-actions">
-                        <button class="preview-button"
-                         type="button" data-preview data-title="Lagercontainer" data-type="Storage" data-model="models/lager-container.glb" data-i18n="btn-preview">
-                            Vorschau
-                        </button>
-                        <button class="preview-button image-button" type="button" data-gallery data-title="Lagercontainer" data-images="bilder/lager/Lager.png|bilder/lager/Lager%20innen.png" data-i18n="btn-images">
-                            Bilder
-                        </button>
+<article class="service-card">
+                    <div class="service-photo"><img src="bilder/lager/Lager.png" alt="Lagercontainer aus dem Angebot von ContainerRent Varna" data-i18n-alt="service-storage-alt" loading="lazy" decoding="async" width="640" height="420"></div>
+                    <div class="service-card-content">
+                        <span class="service-number">02</span>
+                        <h3 data-i18n="service-storage-title">Lagercontainer</h3>
+                        <p data-i18n="service-storage-desc">Zusätzlicher Platz für Werkzeuge, Material, Waren oder persönliche Gegenstände.</p>
+                        <dl class="service-facts">
+                            <div><dt data-i18n="service-use">Geeignet für</dt><dd data-i18n="service-storage-use">Material &amp; Lagerung</dd></div>
+                            <div><dt data-i18n="service-details">Größe &amp; Ausstattung</dt><dd data-i18n="service-on-request">Persönlich abstimmen</dd></div>
+                        </dl>
+                        <div class="service-actions">
+                            <button class="preview-button" type="button" data-preview data-type="Storage" data-product-key="service-storage-title" data-model="models/lager-container.glb" data-i18n="btn-preview">3D ansehen</button>
+                            <button class="preview-button image-button" type="button" data-gallery data-type="Storage" data-product-key="service-storage-title" data-images="bilder/lager/Lager.png|bilder/lager/Lager%20innen.png" data-i18n="btn-images">Bilder</button>
+                            <a class="service-inquiry" href="#kontakt" data-i18n="btn-inquire">Anfragen</a>
+                        </div>
                     </div>
                 </article>
+<article class="service-card">
+                    <div class="service-photo"><img src="bild.JPG" alt="Container am Standort von ContainerRent in Varna" data-i18n-alt="service-module-alt" loading="lazy" decoding="async" width="640" height="420"><span class="service-photo-note" data-i18n="service-module-image-note">Einblick in unseren Standort</span></div>
+                    <div class="service-card-content">
+                        <span class="service-number">03</span>
+                        <h3 data-i18n="service-module-title">Flexible Module</h3>
+                        <p data-i18n="service-module-desc">Mehrere Raumbedürfnisse? Besprich mit uns eine Containerlösung für dein Vorhaben.</p>
+                        <dl class="service-facts">
+                            <div><dt data-i18n="service-use">Geeignet für</dt><dd data-i18n="service-module-use">Individuelle Raumnutzung</dd></div>
+                            <div><dt data-i18n="service-details">Größe &amp; Ausstattung</dt><dd data-i18n="service-on-request">Persönlich abstimmen</dd></div>
+                        </dl>
+                        <div class="service-actions">
+                            <button class="preview-button" type="button" data-preview data-type="Modular" data-product-key="service-module-title" data-model="models/modul-container.glb" data-i18n="btn-preview">3D ansehen</button>
 
-                <article class="service-card reveal">
-                    <span class="service-icon">03</span>
-                    <h3 data-i18n="service-module-title">Flexible Module</h3>
-                    <p data-i18n="service-module-desc">Containerlösungen, die sich an Projektgröße, Laufzeit und Standort anpassen.</p>
-                    <div class="service-actions">
-                        <button class="preview-button" type="button" data-preview data-title="Flexible Module" data-type="Modular" data-model="models/modul-container.glb" data-i18n="btn-preview">
-                            Vorschau
-                        </button>
-                        <button class="preview-button image-button" type="button" data-gallery data-title="Flexible Module" data-images="" data-i18n="btn-images">
-                            Bilder
-                        </button>
+                            <a class="service-inquiry" href="#kontakt" data-i18n="btn-inquire">Anfragen</a>
+                        </div>
                     </div>
-                </article>
-            </div>
+                </article></div>
         </section>
 
         <section class="section advantages" id="vorteile" aria-labelledby="advantages-title">
             <div class="section-heading reveal">
                 <p class="eyebrow" data-i18n="adv-eyebrow">Warum wir?</p>
-                <h2 id="advantages-title" data-i18n="adv-title">Professionell von Anfrage bis Abholung</h2>
+                <h2 id="advantages-title" data-i18n="adv-title">In drei Schritten zum passenden Raum.</h2>
             </div>
 
             <div class="advantage-layout">
                 <div class="advantage-copy reveal">
-                    <p data-i18n="adv-desc">
-                        Qualität, Zuverlässigkeit and faire Preise stehen im Mittelpunkt. Unsere Container
-                        sind modern, gepflegt und schnell einsatzbereit.
-                    </p>
+                    <p data-i18n="adv-desc">Ein Ansprechpartner, klare Absprachen und eine Lösung für deinen Bedarf. Iliya begleitet dich von der ersten Frage bis zur Abstimmung der Miete.</p>
                 </div>
 
                 <ol class="process-list reveal">
@@ -180,19 +158,23 @@
                     </li>
                     <li>
                         <span data-i18n="process-step2-title">Planung</span>
-                        <p data-i18n="process-step2-desc">Wir klären Verfügbarkeit, Transport und passende Ausstattung.</p>
+                        <p data-i18n="process-step2-desc">Wir besprechen Verfügbarkeit, Größe, Ausstattung und die Möglichkeiten am gewünschten Standort.</p>
                     </li>
                     <li>
                         <span data-i18n="process-step3-title">Start</span>
-                        <p data-i18n="process-step3-desc">Der Container wird bereitgestellt und kann sofort genutzt werden.</p>
+                        <p data-i18n="process-step3-desc">Du erhältst die abgestimmten Angaben zu Preis, Mietdauer und Bereitstellung.</p>
                     </li>
                 </ol>
             </div>
         </section>
 
+        <section class="section faq" id="fragen" aria-labelledby="faq-title">
+            <div class="section-heading"><p class="eyebrow" data-i18n="faq-eyebrow">Gut zu wissen</p><h2 id="faq-title" data-i18n="faq-title">Die wichtigsten Fragen vor der Miete.</h2></div>
+            <div class="faq-list"><details><summary data-i18n="faq-one-q">Welcher Container ist der richtige für mich?</summary><p data-i18n="faq-one-a">Bürocontainer eignen sich für Arbeitsplätze, Lagercontainer für Material und Gegenstände. Wenn du mehrere Nutzungen verbinden möchtest, besprich deinen Bedarf mit Iliya.</p></details><details><summary data-i18n="faq-two-q">Was kostet die Miete und was ist verfügbar?</summary><p data-i18n="faq-two-a">Das hängt vom Containertyp, der Ausstattung und dem Mietzeitraum ab. Iliya nennt dir die verfügbaren Möglichkeiten und ein passendes Angebot. Konkrete Preise klärst du vor der Miete.</p></details><details><summary data-i18n="faq-three-q">Welche Angaben brauche ich für eine Anfrage?</summary><p data-i18n="faq-three-a">Hilfreich sind der Einsatzzweck, dein gewünschter Zeitraum und der Standort. Wenn du schon eine Größe im Kopf hast, nenne sie ebenfalls.</p></details><details><summary data-i18n="faq-four-q">Wie werden Standort und Transport geklärt?</summary><p data-i18n="faq-four-a">Nenne uns, wo du den Container nutzen möchtest. Die Nutzungsmöglichkeiten, eine mögliche Lieferung und die Bedingungen für die Aufstellung klärst du persönlich mit Iliya.</p></details></div>
+        </section>
         <section class="section location reveal" aria-labelledby="location-title">
             <div class="section-heading">
-                <p class="eyebrow" data-i18n="loc-eyebrow">Standort & Zeiten</p>
+                <p class="eyebrow" data-i18n="loc-eyebrow">Standort &amp; Zeiten</p>
                 <h2 id="location-title" data-i18n="loc-title">Direkt in Varna erreichbar</h2>
             </div>
 
@@ -228,27 +210,27 @@
                     <div class="review-viewport">
                         <div class="review-track" data-review-track>
                             <article class="review-card is-active" data-review-slide>
-                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span><span>Google Maps</span></div>
+                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen" data-i18n-aria-label="review-stars">★★★★★</span><span>Google Maps</span></div>
                                 <blockquote data-i18n="review-1-text">Top Service und absolut zuverlässig! Die Preise sind fair, und die Kommunikation war super freundlich. Alles lief reibungslos und professionell ab. Kann ich nur weiterempfehlen – jederzeit gerne wieder</blockquote>
                                 <div class="review-author"><span class="review-avatar" aria-hidden="true">IC</span><cite data-i18n="review-1-name">Ilian Chobanov</cite></div>
                             </article>
                             <article class="review-card" data-review-slide>
-                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span><span>Google Maps</span></div>
+                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen" data-i18n-aria-label="review-stars">★★★★★</span><span>Google Maps</span></div>
                                 <blockquote data-i18n="review-2-text">Ich suche schon lange nach solch einer Lagermöglichkeit in Varna! Endlich habe ich Container Rent gefunden. Der Vermieter ist aufmerksam und sehr freundlich. Es gibt verschiedene Größen die man anmieten kann.</blockquote>
                                 <div class="review-author"><span class="review-avatar" aria-hidden="true">DO</span><cite data-i18n="review-2-name">Dark O „McD“</cite></div>
                             </article>
                             <article class="review-card" data-review-slide>
-                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span><span>Google Maps</span></div>
+                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen" data-i18n-aria-label="review-stars">★★★★★</span><span>Google Maps</span></div>
                                 <blockquote data-i18n="review-3-text">Sehr guter Service und ein sehr freundlicher Standortleiter. Jederzeit einfacher, automatisierter Zugang zum eingelagerten Gut, umfassende Unterstützung durch das Personal. Saubere, gut isolierte und gewartete Container.</blockquote>
                                 <div class="review-author"><span class="review-avatar" aria-hidden="true">IG</span><cite data-i18n="review-3-name">Ivaylo Ganchev</cite></div>
                             </article>
                             <article class="review-card" data-review-slide>
-                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span><span>Google Maps</span></div>
+                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen" data-i18n-aria-label="review-stars">★★★★★</span><span>Google Maps</span></div>
                                 <blockquote data-i18n="review-4-text">Ich bin mit dem Service sehr zufrieden. Der Lagerraum ist ideal. Der Vermieter ist sehr hilfsbereit und freundlich. Und der Mietpreis ist äußerst günstig. Ich empfehle ihn jedem, der einen Lagerraum benötigt.</blockquote>
                                 <div class="review-author"><span class="review-avatar" aria-hidden="true">БГ</span><cite data-i18n="review-4-name">Благовест Георгиев</cite></div>
                             </article>
                             <article class="review-card" data-review-slide>
-                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen">★★★★★</span><span>Google Maps</span></div>
+                                <div class="review-card-top"><span class="stars" aria-label="5 von 5 Sternen" data-i18n-aria-label="review-stars">★★★★★</span><span>Google Maps</span></div>
                                 <blockquote data-i18n="review-5-text">Ich kann diesen Lagerraum in Varna uneingeschränkt empfehlen. Freundlich und professionell. Hervorragende Kommunikation. Preiswert.</blockquote>
                                 <div class="review-author"><span class="review-avatar" aria-hidden="true">I</span><cite data-i18n="review-5-name">Ian</cite></div>
                             </article>
@@ -263,88 +245,71 @@
             </div>
         </section>
 
-        <section class="section team" id="team" aria-labelledby="team-title">
-            <div class="section-heading reveal">
-                <p class="eyebrow" data-i18n="team-eyebrow">Ansprechpartner</p>
-                <h2 id="team-title" data-i18n="team-title">Dein direkter Kontakt</h2>
+        <section class="section contact-band" id="kontakt" aria-labelledby="contact-title">
+            <div class="contact-content">
+                <p class="eyebrow" data-i18n="contact-eyebrow">Dein Ansprechpartner</p>
+                <h2 id="contact-title" data-i18n="contact-title">Dein Vorhaben beginnt mit einem Gespräch.</h2>
+                <p data-i18n="contact-desc">Iliya hilft dir bei Fragen zu Containertyp, Verfügbarkeit und Miete. Ruf direkt an und besprich, was du brauchst.</p>
+                <p class="contact-checklist" data-i18n="contact-note">Für dein Gespräch: Was möchtest du nutzen oder lagern? Für welchen Zeitraum? An welchem Standort?</p>
             </div>
-
-            <div class="team-grid">
-                <article class="team-card reveal">
-                    <p class="role" data-i18n="team-role-owner">Besitzer</p>
-                    <h3>Iliya Chobanov</h3>
-                    <a href="tel:+359893660260">+359 893 660 260</a>
-                </article>
-                <article class="team-card reveal">
-                    <p class="role" data-i18n="team-role-right">Rechte Hand</p>
-                    <h3>Ilian Chobanov</h3>
-                    <a href="tel:+4917620462149">+49 176 204 621 49</a>
-                </article>
-                <article class="team-card reveal">
-                    <p class="role" data-i18n="team-role-finance">Finanzen</p>
-                    <h3>Genoveva Chobanov</h3>
-                    <a href="tel:+4917620375310">+49 176 203 753 10</a>
-                </article>
-            </div>
-        </section>
-
-        <section class="contact-band" id="kontakt" aria-labelledby="contact-title">
-            <div class="contact-content reveal">
-                <p class="eyebrow" data-i18n="contact-eyebrow">Bereit für dein Projekt?</p>
-                <h2 id="contact-title" data-i18n="contact-title">Sag uns, welchen Container du brauchst.</h2>
-                <p data-i18n="contact-desc">Wir melden uns schnell und finden eine passende Lösung für Zeitraum, Standort und Budget.</p>
-            </div>
-            <div class="contact-actions reveal">
-                <a class="button button-primary" href="tel:+359893660260">+359 893 660 260</a>
-                <a class="button button-dark" href="https://www.google.com/maps/place/Container+Rent/@43.2362903,27.852511,17z/data=!4m15!1m8!3m7!1s0x40a5ab4c8e85af0f:0x4cc28aabeaaae8a4!2sSeverVladislav+Varnenchik,+bul.+%22Tsar+Osvoboditel%22+290,+9023+Varna!3b1!8m2!3d43.2362903!4d27.852511!16s%2Fg%2F11k4x3nr2k!3m5!1s0x40a5abce567f4cbd:0x851ac5b3dc80921d!8m2!3d43.2362821!4d27.8525351!16s%2Fg%2F11vz37mph6?entry=ttu&g_ep=EgoyMDI2MDcyOC4wIKXMDSoASAFQAw%3D%3D">Route planen</a>
-            </div>
+            <article class="contact-person" aria-labelledby="contact-name">
+                <span class="contact-initials" aria-hidden="true">IC</span>
+                <p class="role" data-i18n="contact-role">Inhaber · ContainerRent Varna</p>
+                <h3 id="contact-name">Iliya Chobanov</h3>
+                <a class="contact-phone" href="tel:+359893660260" data-i18n-aria-label="contact-phone-label">+359 893 660 260</a>
+                <div class="contact-actions">
+                    <a class="button button-primary" href="tel:+359893660260" data-i18n="contact-call">Iliya anrufen</a>
+                    <a class="button button-outline" href="https://www.google.com/maps/place/Container+Rent/@43.2362903,27.852511,17z/data=!4m15!1m8!3m7!1s0x40a5ab4c8e85af0f:0x4cc28aabeaaae8a4!2sSeverVladislav+Varnenchik,+bul.+%22Tsar+Osvoboditel%22+290,+9023+Varna!3b1!8m2!3d43.2362903!4d27.852511!16s%2Fg%2F11k4x3nr2k!3m5!1s0x40a5abce567f4cbd:0x851ac5b3dc80921d!8m2!3d43.2362821!4d27.8525351!16s%2Fg%2F11vz37mph6?entry=ttu&g_ep=EgoyMDI2MDcyOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" data-i18n="btn-route">Route planen</a>
+                </div>
+                <p class="contact-hours" data-i18n="contact-hours">Die Öffnungszeiten findest du oben unter Standort &amp; Zeiten.</p>
+            </article>
         </section>
     </main>
 
-    <!-- Modale für 3D und Bilder (unverändert) -->
+    <!-- Container-Vorschauen -->
     <div class="model-modal" data-model-modal hidden>
-        <button class="modal-backdrop" type="button" data-close-preview aria-label="3D Vorschau schließen"></button>
+        <button class="modal-backdrop" type="button" data-close-preview aria-label="3D-Vorschau schließen" data-i18n-aria-label="model-close"></button>
         <section class="model-dialog" role="dialog" aria-modal="true" aria-labelledby="model-title">
             <div class="model-toolbar">
                 <div>
-                    <p class="eyebrow">3D Vorschau</p>
+                    <p class="eyebrow" data-i18n="model-label">3D-Vorschau</p>
                     <h2 id="model-title">Container</h2>
-                    <p class="model-status" data-model-status>Bereit</p>
+                    <p class="model-status" data-model-status role="status"></p>
                 </div>
                 <div class="model-actions">
-                    <button class="spin-toggle" type="button" data-spin-toggle aria-label="Drehung pausieren" title="Drehung pausieren">
+                    <button class="spin-toggle" type="button" data-spin-toggle aria-label="Drehung pausieren" data-i18n-aria-label="spin-pause" title="Drehung pausieren">
                         <span class="spin-icon" aria-hidden="true"></span>
                     </button>
-                    <button class="modal-close" type="button" data-close-preview aria-label="3D Vorschau schließen">×</button>
+                    <button class="modal-close" type="button" data-close-preview aria-label="3D-Vorschau schließen" data-i18n-aria-label="model-close">×</button>
                 </div>
             </div>
             <div class="model-stage" data-model-stage>
-                <canvas id="model-canvas"></canvas>
+                <canvas id="model-canvas" role="img" aria-label="Interaktive 3D-Ansicht des Containers" data-i18n-aria-label="model-canvas"></canvas>
             </div>
         </section>
     </div>
 
     <div class="gallery-modal" data-gallery-modal hidden>
-        <button class="modal-backdrop" type="button" data-close-gallery aria-label="Bilder schließen"></button>
+        <button class="modal-backdrop" type="button" data-close-gallery aria-label="Bilder schließen" data-i18n-aria-label="gallery-close"></button>
         <section class="gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
             <div class="gallery-toolbar">
                 <div>
-                    <p class="eyebrow">Bilder</p>
+                    <p class="eyebrow" data-i18n="gallery-label">Bilder</p>
                     <h2 id="gallery-title">Container</h2>
-                    <p class="gallery-status" data-gallery-status>Bild 1 von 1</p>
+                    <p class="gallery-status" data-gallery-status role="status"></p>
                 </div>
-                <button class="modal-close" type="button" data-close-gallery aria-label="Bilder schließen">×</button>
+                <button class="modal-close" type="button" data-close-gallery aria-label="Bilder schließen" data-i18n-aria-label="gallery-close">×</button>
             </div>
             <div class="gallery-stage" data-gallery-stage>
-                <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-prev aria-label="Vorheriges Bild">‹</button>
+                <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-prev aria-label="Vorheriges Bild" data-i18n-aria-label="gallery-prev">‹</button>
                 <figure class="gallery-frame">
                     <img class="gallery-image" data-gallery-image alt="">
                     <figcaption class="gallery-caption" data-gallery-caption></figcaption>
                     <p class="gallery-fallback" data-gallery-fallback hidden></p>
                 </figure>
-                <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-next aria-label="Nächstes Bild">›</button>
+                <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-next aria-label="Nächstes Bild" data-i18n-aria-label="gallery-next">›</button>
             </div>
-            <div class="gallery-thumbs" data-gallery-thumbs aria-label="Bildauswahl"></div>
+            <div class="gallery-thumbs" data-gallery-thumbs aria-label="Bildauswahl" data-i18n-aria-label="gallery-select"></div>
         </section>
     </div>
 
@@ -352,323 +317,7 @@
         <p data-i18n="footer-rights">© 2026 ContainerRent Varna. Alle Rechte vorbehalten.</p>
     </footer>
 
-    
+
     <script type="module" src="viewer.js"></script>
-
-    <!-- ÜBERSETZUNGSSCRIPT MIT KLICK-MODUS UND BULGARISCH -->
-    <script>
-        const translations = {
-            de: {
-                "nav-leistungen": "Leistungen",
-                "nav-vorteile": "Vorteile",
-                "nav-team": "Team",
-                "nav-kontakt": "Kontakt",
-                "hero-eyebrow": "Containervermietung in Varna, Bulgarien",
-                "hero-title": "ContainerRent Varna",
-                "hero-copy": "Moderne Bürocontainer, Lagercontainer und flexible Raumlösungen für Baustellen, Unternehmen und private Projekte.",
-                "btn-call": "Jetzt anrufen",
-                "btn-offer": "Angebot ansehen",
-                "metric-response": "Antwortzeit",
-                "metric-days": "7 Tage",
-                "metric-available": "Erreichbar",
-                "metric-quality": "Qualität",
-                "intro-eyebrow": "Schnell. Sauber. Flexibel.",
-                "intro-title": "Container für jede Situation",
-                "intro-text": "Wir vermieten gepflegte Container von CONTAINEX und liefern robuste Lösungen für Arbeit, Lagerung und Organisation. Der Standort in Varna macht kurze Wege und klare Absprachen möglich.",
-                "services-title": "Was du mieten kannst",
-                "service-office-title": "Bürocontainer",
-                "service-office-desc": "Helle, funktionale Arbeitsräume für Baustellen, Events oder temporäre Teams.",
-                "service-storage-title": "Lagercontainer",
-                "service-storage-desc": "Sichere Lagerfläche für Werkzeuge, Material, Waren oder private Gegenstände.",
-                "service-module-title": "Flexible Module",
-                "service-module-desc": "Containerlösungen, die sich an Projektgröße, Laufzeit und Standort anpassen.",
-                "btn-preview": "Vorschau",
-                "btn-images": "Bilder",
-                "adv-eyebrow": "Warum wir?",
-                "adv-title": "Professionell von Anfrage bis Abholung",
-                "adv-desc": "Qualität, Zuverlässigkeit and faire Preise stehen im Mittelpunkt. Unsere Container sind modern, gepflegt und schnell einsatzbereit.",
-                "adv-quote1": "Top Service und absolut zuverlässig. Faire Preise, freundliche Kommunikation und eine professionelle Abwicklung.",
-                "adv-quote2": "Ich war mit den Leistungen des Unternehmens sehr zufrieden und kann es jedem weiterempfehlen. Ihre Sachen sind dort in guten Händen!",
-                "process-step1-title": "Anfrage",
-                "process-step1-desc": "Du nennst Einsatzort, Zeitraum und gewünschten Containertyp.",
-                "process-step2-title": "Planung",
-                "process-step2-desc": "Wir klären Verfügbarkeit, Transport und passende Ausstattung.",
-                "process-step3-title": "Start",
-                "process-step3-desc": "Der Container wird bereitgestellt und kann sofort genutzt werden.",
-                "loc-eyebrow": "Standort & Zeiten",
-                "loc-title": "Direkt in Varna erreichbar",
-                "loc-address-title": "Adresse",
-                "loc-hours-title": "Öffnungszeiten",
-                "loc-hours-mofr": "Mo-Fr",
-                "loc-hours-sat": "Samstag",
-                "loc-hours-sun": "Sonntag",
-                "loc-hours-mofr-time": "09:00 bis 18:00",
-                "loc-hours-sat-time": "09:00 bis 15:00",
-                "loc-hours-sun-time": "10:00 bis 15:00",
-                "team-eyebrow": "Ansprechpartner",
-                "team-title": "Dein direkter Kontakt",
-                "team-role-owner": "Besitzer",
-                "team-role-right": "Rechte Hand",
-                "team-role-finance": "Finanzen",
-                "contact-eyebrow": "Bereit für dein Projekt?",
-                "contact-title": "Sag uns, welchen Container du brauchst.",
-                "contact-desc": "Wir melden uns schnell und finden eine passende Lösung für Zeitraum, Standort und Budget.",
-                "btn-route": "Route planen",
-                "footer-rights": "© 2026 ContainerRent Varna. Alle Rechte vorbehalten.",
-                "reviews-source": "Google Maps",
-                "reviews-title": "Was unsere Kunden sagen",
-                "reviews-aria": "Durchschnittlich 5,0 von 5 Sternen bei 32 Rezensionen",
-                "reviews-count": "32 Rezensionen",
-                "reviews-note": "Ausgewählte echte Bewertungen von Google Maps.",
-                "reviews-source-link": "Quelle auf Google Maps öffnen ↗",
-                "reviews-prev": "Vorherige Bewertung",
-                "reviews-next": "Nächste Bewertung",
-                "reviews-select": "Bewertung auswählen",
-                "review-1-text": "Top Service und absolut zuverlässig! Die Preise sind fair, und die Kommunikation war super freundlich. Alles lief reibungslos und professionell ab. Kann ich nur weiterempfehlen – jederzeit gerne wieder",
-                "review-2-text": "Ich suche schon lange nach solch einer Lagermöglichkeit in Varna! Endlich habe ich Container Rent gefunden. Der Vermieter ist aufmerksam und sehr freundlich. Es gibt verschiedene Größen die man anmieten kann.",
-                "review-3-text": "Sehr guter Service und ein sehr freundlicher Standortleiter. Jederzeit einfacher, automatisierter Zugang zum eingelagerten Gut, umfassende Unterstützung durch das Personal. Saubere, gut isolierte und gewartete Container.",
-                "review-4-text": "Ich bin mit dem Service sehr zufrieden. Der Lagerraum ist ideal. Der Vermieter ist sehr hilfsbereit und freundlich. Und der Mietpreis ist äußerst günstig. Ich empfehle ihn jedem, der einen Lagerraum benötigt.",
-                "review-5-text": "Ich kann diesen Lagerraum in Varna uneingeschränkt empfehlen. Freundlich und professionell. Hervorragende Kommunikation. Preiswert.",
-                "review-1-name": "Ilian Chobanov",
-                "review-2-name": "Dark O „McD“",
-                "review-3-name": "Ivaylo Ganchev",
-                "review-4-name": "Благовест Георгиев",
-                "review-5-name": "Ian"
-            },
-            en: {
-                "nav-leistungen": "Services",
-                "nav-vorteile": "Advantages",
-                "nav-team": "Team",
-                "nav-kontakt": "Contact",
-                "hero-eyebrow": "Container rental in Varna, Bulgaria",
-                "hero-title": "ContainerRent Varna",
-                "hero-copy": "Modern office containers, storage containers and flexible space solutions for construction sites, businesses and private projects.",
-                "btn-call": "Call now",
-                "btn-offer": "View offer",
-                "metric-response": "Response time",
-                "metric-days": "7 Days",
-                "metric-available": "Available",
-                "metric-quality": "Quality",
-                "intro-eyebrow": "Fast. Clean. Flexible.",
-                "intro-title": "Containers for every situation",
-                "intro-text": "We rent well-maintained CONTAINEX containers and provide robust solutions for work, storage and organization. Our location in Varna enables short distances and clear communication.",
-                "services-title": "What you can rent",
-                "service-office-title": "Office container",
-                "service-office-desc": "Bright, functional workspaces for construction sites, events or temporary teams.",
-                "service-storage-title": "Storage container",
-                "service-storage-desc": "Secure storage space for tools, materials, goods or personal items.",
-                "service-module-title": "Flexible modules",
-                "service-module-desc": "Container solutions that adapt to project size, duration and location.",
-                "btn-preview": "Preview",
-                "btn-images": "Pictures",
-                "adv-eyebrow": "Why us?",
-                "adv-title": "Professional from inquiry to pickup",
-                "adv-desc": "Quality, reliability and fair prices are our priority. Our containers are modern, well-maintained and ready for use quickly.",
-                "adv-quote1": "Top service and absolutely reliable. Fair prices, friendly communication and professional handling.",
-                "adv-quote2": "I was very satisfied with the company's services and can recommend it to everyone. Your belongings are in good hands there!",
-                "process-step1-title": "Inquiry",
-                "process-step1-desc": "You specify the location, time period and desired container type.",
-                "process-step2-title": "Planning",
-                "process-step2-desc": "We clarify availability, transport and suitable equipment.",
-                "process-step3-title": "Start",
-                "process-step3-desc": "The container is provided and can be used immediately.",
-                "loc-eyebrow": "Location & Hours",
-                "loc-title": "Directly reachable in Varna",
-                "loc-address-title": "Address",
-                "loc-hours-title": "Opening hours",
-                "loc-hours-mofr": "Mon-Fri",
-                "loc-hours-sat": "Saturday",
-                "loc-hours-sun": "Sunday",
-                "loc-hours-mofr-time": "09:00 to 18:00",
-                "loc-hours-sat-time": "09:00 to 15:00",
-                "loc-hours-sun-time": "10:00 to 15:00",
-                "team-eyebrow": "Contact person",
-                "team-title": "Your direct contact",
-                "team-role-owner": "Owner",
-                "team-role-right": "Right hand",
-                "team-role-finance": "Finance",
-                "contact-eyebrow": "Ready for your project?",
-                "contact-title": "Tell us which container you need.",
-                "contact-desc": "We will get back to you quickly and find a suitable solution for time period, location and budget.",
-                "btn-route": "Plan route",
-                "footer-rights": "© 2026 ContainerRent Varna. All rights reserved.",
-                "reviews-source": "Google Maps",
-                "reviews-title": "What our customers say",
-                "reviews-aria": "Average rating 5.0 out of 5 stars from 32 reviews",
-                "reviews-count": "32 reviews",
-                "reviews-note": "Selected genuine reviews from Google Maps.",
-                "reviews-source-link": "Open source on Google Maps ↗",
-                "reviews-prev": "Previous review",
-                "reviews-next": "Next review",
-                "reviews-select": "Select review",
-                "review-1-text": "Top service and absolutely reliable! The prices are fair, and communication was super friendly. Everything went smoothly and professionally. I can only recommend it – happy to come back anytime.",
-                "review-2-text": "I have been looking for a storage option like this in Varna for a long time! Finally I found Container Rent. The landlord is attentive and very friendly. There are different sizes available for rent.",
-                "review-3-text": "Very good service and a very friendly site manager. Easy, automated access to the stored goods at any time, with comprehensive support from the staff. Clean, well-insulated and well-maintained containers.",
-                "review-4-text": "I am very satisfied with the service. The storage space is ideal. The landlord is very helpful and friendly, and the rental price is extremely affordable. I recommend it to anyone who needs storage space.",
-                "review-5-text": "I can recommend this storage facility in Varna without reservation. Friendly and professional. Excellent communication. Good value.",
-                "review-1-name": "Ilian Chobanov",
-                "review-2-name": "Dark O „McD“",
-                "review-3-name": "Ivaylo Ganchev",
-                "review-4-name": "Благовест Георгиев",
-                "review-5-name": "Ian"
-            },
-            ru: {
-                "nav-leistungen": "Услуги",
-                "nav-vorteile": "Преимущества",
-                "nav-team": "Команда",
-                "nav-kontakt": "Контакты",
-                "hero-eyebrow": "Аренда контейнеров в Варне, Болгария",
-                "hero-title": "ContainerRent Varna",
-                "hero-copy": "Современные офисные и складские контейнеры, а также гибкие решения для строительных площадок, бизнеса и частных проектов.",
-                "btn-call": "Позвонить сейчас",
-                "btn-offer": "Смотреть предложения",
-                "metric-response": "Время ответа",
-                "metric-days": "7 Дней",
-                "metric-available": "На связи",
-                "metric-quality": "Качество",
-                "intro-eyebrow": "Быстро. Чисто. Удобно.",
-                "intro-title": "Контейнеры для любой ситуации",
-                "intro-text": "Мы сдаем в аренду ухоженные контейнеры CONTAINEX и предлагаем надежные решения для работы, хранения и организации. Наше расположение в Варне обеспечивает быстрый сервис и прозрачную коммуникацию.",
-                "services-title": "Что вы можете арендовать",
-                "service-office-title": "Офисные контейнеры",
-                "service-office-desc": "Светлые и функциональные рабочие помещения для строек, мероприятий или временных команд.",
-                "service-storage-title": "Складские контейнеры",
-                "service-storage-desc": "Надежное место для хранения инструментов, материалов, товаров или личных вещей.",
-                "service-module-title": "Гибкие модули",
-                "service-module-desc": "Контейнерные решения, которые адаптируются под размер проекта, сроки и локацию.",
-                "btn-preview": "Предпросмотр",
-                "btn-images": "Фото",
-                "adv-eyebrow": "Почему мы?",
-                "adv-title": "Профессионально от заявки до возврата",
-                "adv-desc": "Качество, надежность и честные цены — наш приоритет. Наши контейнеры современные, в отличном состоянии и готовы к быстрому использованию.",
-                "adv-quote1": "Отличный сервис и абсолютная надежность. Справедливые цены, дружелюбное общение и профессиональный подход.",
-                "adv-quote2": "Я был очень доволен услугами компании и могу рекомендовать её всем. Ваши вещи здесь в надежных руках!",
-                "process-step1-title": "Заявка",
-                "process-step1-desc": "Вы указываете место, сроки и нужный тип контейнера.",
-                "process-step2-title": "Планирование",
-                "process-step2-desc": "Мы согласовываем наличие, транспортировку и комплектацию.",
-                "process-step3-title": "Старт",
-                "process-step3-desc": "Контейнер доставляется и готов к немедленному использованию.",
-                "loc-eyebrow": "Локация и время работы",
-                "loc-title": "Мы находимся в Варне",
-                "loc-address-title": "Адрес",
-                "loc-hours-title": "Время работы",
-                "loc-hours-mofr": "Пн-Пт",
-                "loc-hours-sat": "Суббота",
-                "loc-hours-sun": "Воскресенье",
-                "loc-hours-mofr-time": "09:00–18:00",
-                "loc-hours-sat-time": "09:00–15:00",
-                "loc-hours-sun-time": "10:00–15:00",
-                "team-eyebrow": "Контакты",
-                "team-title": "Ваш прямой контакт",
-                "team-role-owner": "Владелец",
-                "team-role-right": "Помощник",
-                "team-role-finance": "Финансы",
-                "contact-eyebrow": "Готовы начать проект?",
-                "contact-title": "Расскажите, какой контейнер вам нужен.",
-                "contact-desc": "Мы быстро свяжемся с вами и найдем подходящее решение по срокам, месту и бюджету.",
-                "btn-route": "Проложить маршрут",
-                "footer-rights": "© 2026 ContainerRent Varna. Все права защищены.",
-                "reviews-source": "Google Maps",
-                "reviews-title": "Что говорят наши клиенты",
-                "reviews-aria": "Средняя оценка 5,0 из 5 звёзд по 32 отзывам",
-                "reviews-count": "32 отзыва",
-                "reviews-note": "Избранные настоящие отзывы из Google Maps.",
-                "reviews-source-link": "Открыть источник в Google Maps ↗",
-                "reviews-prev": "Предыдущий отзыв",
-                "reviews-next": "Следующий отзыв",
-                "reviews-select": "Выбрать отзыв",
-                "review-1-text": "Отличный сервис и абсолютная надёжность! Цены справедливые, общение очень дружелюбное. Всё прошло гладко и профессионально. Однозначно рекомендую — с удовольствием обращусь снова.",
-                "review-2-text": "Я давно искал такое место для хранения в Варне! Наконец нашёл Container Rent. Арендодатель внимательный и очень дружелюбный. Есть контейнеры разных размеров.",
-                "review-3-text": "Очень хороший сервис и очень дружелюбный управляющий. Удобный автоматизированный доступ к хранимым вещам, полная поддержка персонала. Чистые, хорошо изолированные и ухоженные контейнеры.",
-                "review-4-text": "Я очень доволен сервисом. Складское помещение идеально подходит. Арендодатель очень отзывчивый и дружелюбный, а цена аренды действительно доступная. Рекомендую всем, кому нужно место для хранения.",
-                "review-5-text": "Однозначно рекомендую это место для хранения в Варне. Дружелюбно и профессионально. Отличное общение. Выгодная цена.",
-                "review-1-name": "Ilian Chobanov",
-                "review-2-name": "Dark O „McD“",
-                "review-3-name": "Ivaylo Ganchev",
-                "review-4-name": "Благовест Георгиев",
-                "review-5-name": "Ian"
-            },
-            bg: {
-                "nav-leistungen": "Услуги",
-                "nav-vorteile": "Предимства",
-                "nav-team": "Екип",
-                "nav-kontakt": "Контакти",
-                "hero-eyebrow": "Наем на контейнери във Варна, България",
-                "hero-title": "ContainerRent Varna",
-                "hero-copy": "Модерни офис контейнери, складови контейнери и гъвкави решения за строителни обекти, фирми и частни проекти.",
-                "btn-call": "Обадете се сега",
-                "btn-offer": "Вижте офертите",
-                "metric-response": "Време за отговор",
-                "metric-days": "7 дни",
-                "metric-available": "На разположение",
-                "metric-quality": "Качество",
-                "intro-eyebrow": "Бързо. Чисто. Гъвкаво.",
-                "intro-title": "Контейнери за всяка ситуация",
-                "intro-text": "Отдаваме под наем поддържани контейнери от CONTAINEX и предлагаме надеждни решения за работа, съхранение и организация. Локацията ни във Варна позволява бързо обслужване и ясна комуникация.",
-                "services-title": "Какво можете да наемете",
-                "service-office-title": "Офис контейнери",
-                "service-office-desc": "Светли и функционални работни помещения за строителни обекти, събития или временни екипи.",
-                "service-storage-title": "Складови контейнери",
-                "service-storage-desc": "Сигурно място за съхранение на инструменти, материали, стоки или лични вещи.",
-                "service-module-title": "Гъвкави модули",
-                "service-module-desc": "Контейнерни решения, които се адаптират към размера на проекта, срока и локацията.",
-                "btn-preview": "Преглед",
-                "btn-images": "Снимки",
-                "adv-eyebrow": "Защо ние?",
-                "adv-title": "Професионално от запитването до връщането",
-                "adv-desc": "Качеството, надеждността и честните цени са наш приоритет. Нашите контейнери са модерни, поддържани и готови за бърза употреба.",
-                "adv-quote1": "Топ обслужване и абсолютна надеждност. Честни цени, приятелска комуникация и професионално отношение.",
-                "adv-quote2": "Останах много доволен от услугите на компанията и бих я препоръчал на всеки. Вашите вещи са в сигурни ръце!",
-                "process-step1-title": "Запитване",
-                "process-step1-desc": "Посочвате локация, период и желания тип контейнер.",
-                "process-step2-title": "Планиране",
-                "process-step2-desc": "Уточняваме наличността, транспорта и подходящото оборудване.",
-                "process-step3-title": "Старт",
-                "process-step3-desc": "Контейнерът се доставя и е готов за незабавна употреба.",
-                "loc-eyebrow": "Локация и работно време",
-                "loc-title": "Директно във Варна",
-                "loc-address-title": "Адрес",
-                "loc-hours-title": "Работно време",
-                "loc-hours-mofr": "Пн-Пт",
-                "loc-hours-sat": "Събота",
-                "loc-hours-sun": "Неделя",
-                "loc-hours-mofr-time": "09:00–18:00",
-                "loc-hours-sat-time": "09:00–15:00",
-                "loc-hours-sun-time": "10:00–15:00",
-                "team-eyebrow": "Лице за контакт",
-                "team-title": "Вашият директен контакт",
-                "team-role-owner": "Собственик",
-                "team-role-right": "Дясна ръка",
-                "team-role-finance": "Финанси",
-                "contact-eyebrow": "Готови ли сте за вашия проект?",
-                "contact-title": "Кажете ни какъв контейнер ви трябва.",
-                "contact-desc": "Ще се свържем с вас бързо и ще намерим подходящо решение за срок, локация и бюджет.",
-                "btn-route": "Планиране на маршрут",
-                "footer-rights": "© 2026 ContainerRent Varna. Всички права запазени.",
-                "reviews-source": "Google Maps",
-                "reviews-title": "Какво казват нашите клиенти",
-                "reviews-aria": "Средна оценка 5,0 от 5 звезди от 32 отзива",
-                "reviews-count": "32 отзива",
-                "reviews-note": "Избрани истински отзиви от Google Maps.",
-                "reviews-source-link": "Отвори източника в Google Maps ↗",
-                "reviews-prev": "Предишен отзив",
-                "reviews-next": "Следващ отзив",
-                "reviews-select": "Избери отзив",
-                "review-1-text": "Отлично обслужване и абсолютна надеждност! Цените са справедливи, а комуникацията беше много приятелска. Всичко мина гладко и професионално. Горещо препоръчвам — с удоволствие бих се върнал отново.",
-                "review-2-text": "Отдавна търся такова място за съхранение във Варна! Най-накрая открих Container Rent. Наемодателят е внимателен и много любезен. Има контейнери с различни размери.",
-                "review-3-text": "Много добро обслужване и изключително любезен управител на обекта. Лесен автоматизиран достъп до съхраняваните вещи и пълна подкрепа от персонала. Чисти, добре изолирани и поддържани контейнери.",
-                "review-4-text": "Много съм доволен от обслужването. Складовото помещение е идеално. Наемодателят е много отзивчив и любезен, а цената е изключително достъпна. Препоръчвам го на всеки, който има нужда от склад.",
-                "review-5-text": "Горещо препоръчвам това складово помещение във Варна. Любезно и професионално обслужване. Отлична комуникация. Добра цена.",
-                "review-1-name": "Ilian Chobanov",
-                "review-2-name": "Dark O „McD“",
-                "review-3-name": "Ivaylo Ganchev",
-                "review-4-name": "Благовест Георгиев",
-                "review-5-name": "Ian"
-            }
-        };
-
-       
-    </script>
 </body>
 </html>

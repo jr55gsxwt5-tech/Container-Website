@@ -1,6 +1,9 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { t, initLanguage, setLanguage } from "./i18n.js";
+
+let THREE;
+let OrbitControls;
+let GLTFLoader;
+let libraryPromise;
 
 const modal = document.querySelector("[data-model-modal]");
 const title = document.querySelector("#model-title");
@@ -43,6 +46,8 @@ let galleryIndex = 0;
 let galleryPointerStartX = null;
 let viewerRunning = false;
 let reviewIndex = 0;
+let lastFocusedElement = null;
+let modelRequestId = 0;
 const modelCache = new Map();
 const fallbackCache = new Map();
 
@@ -63,50 +68,22 @@ const modelMaterials = {
         accent: 0xff8a3d,
     },
 };
-// haupt-Menü schließen, wenn außerhalb geklickt wird
-
-document.addEventListener("click", function (event) {
-    const nav = document.querySelector(".site-nav");
-    const navToggle = document.querySelector(".nav-toggle");
-    const langMenu = document.querySelector(".lang-menu");
-    const dropdown = document.querySelector(".lang-menu ul");
-
-    // Nur auf Handy
-    if (window.innerWidth > 620) return;
-
-    // Wenn außerhalb von Menü und Hamburger geklickt wird
-    if (
-        !nav.contains(event.target) &&
-        !navToggle.contains(event.target)
-    ) {
-        nav.classList.remove("is-open");      // Navigation schließen
-        navToggle.classList.remove("is-open"); // Hamburger zurücksetzen
-        dropdown.classList.remove("show");     // Sprachmenü schließen
-    }
-});
-
-// Sprachmenü schließen, wenn ein Link geklickt wird
-document.querySelectorAll(".lang-menu ul li a").forEach(link => {
-    link.addEventListener("click", function () {
-        if (window.innerWidth <= 620) {
-
-            // Sprachmenü schließen
-            document.querySelector(".lang-menu ul").classList.remove("show");
-
-            // Navigationsmenü schließen
-            document.querySelector(".site-nav").classList.remove("is-open");
-
-            // Hamburger-Button zurücksetzen
-            document.querySelector(".nav-toggle").classList.remove("is-open");
-        }
-    });
-});
-
-// Menü umschalten
-const ensureViewer = () => {
+const ensureViewer = async () => {
     if (renderer) {
         return;
     }
+
+    libraryPromise ??= Promise.all([
+        import("three"),
+        import("three/addons/controls/OrbitControls.js"),
+        import("three/addons/loaders/GLTFLoader.js"),
+    ]).catch((error) => {
+        libraryPromise = null;
+        throw error;
+    });
+    const modules = await libraryPromise;
+    if (renderer) return;
+    [THREE, { OrbitControls }, { GLTFLoader }] = modules;
 
     renderer = new THREE.WebGLRenderer({
         canvas,
@@ -133,21 +110,21 @@ const ensureViewer = () => {
 
     loader = new GLTFLoader();
 
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x24332f, 1.5);
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e467a, 1.5);
     scene.add(hemiLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
     keyLight.position.set(5, 7, 4);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x26c89f, 1.2);
+    const fillLight = new THREE.DirectionalLight(0x93c5fd, 1.2);
     fillLight.position.set(-4, 3, -5);
     scene.add(fillLight);
 
     const ground = new THREE.Mesh(
         new THREE.CircleGeometry(4.8, 96),
         new THREE.MeshStandardMaterial({
-            color: 0x1f2c28,
+            color: 0x173b68,
             roughness: 0.82,
             metalness: 0.05,
             transparent: true,
@@ -169,11 +146,12 @@ const resizeRenderer = () => {
         return;
     }
 
-    const width = Math.max(stage.clientWidth, 320);
-    const height = Math.max(stage.clientHeight, 320);
+    const width = Math.max(stage.clientWidth, 1);
+    const height = Math.max(stage.clientHeight, 1);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    if (activeModel) fitCameraToModel();
 };
 
 const animate = () => {
@@ -195,14 +173,18 @@ const setSpinState = (shouldSpin) => {
     }
 
     spinToggle.classList.toggle("is-paused", !shouldSpin);
-    spinToggle.setAttribute("aria-label", shouldSpin ? "Drehung pausieren" : "Drehung starten");
-    spinToggle.setAttribute("title", shouldSpin ? "Drehung pausieren" : "Drehung starten");
+    const label = t(shouldSpin ? "spin-pause" : "spin-start");
+    spinToggle.setAttribute("aria-label", label);
+    spinToggle.setAttribute("title", label);
 };
 
 const updateModalOpenState = () => {
     const isModelOpen = modal && !modal.hidden;
     const isGalleryOpen = galleryModal && !galleryModal.hidden;
     document.body.classList.toggle("modal-open", isModelOpen || isGalleryOpen);
+    document.querySelectorAll("header, main, footer, .skip-link").forEach((element) => {
+        element.inert = isModelOpen || isGalleryOpen;
+    });
 };
 
 const clearActiveModel = () => {
@@ -239,7 +221,7 @@ reviewSlides.forEach((slide, index) => {
     const dot = document.createElement("button");
     dot.className = "review-dot";
     dot.type = "button";
-    dot.setAttribute("aria-label", `Bewertung ${index + 1} anzeigen`);
+    dot.setAttribute("aria-label", t("review-dot", { index: index + 1 }));
     dot.addEventListener("click", () => showReview(index));
     reviewDots?.append(dot);
 });
@@ -328,6 +310,19 @@ const createContainerFallback = (type) => {
     return group;
 };
 
+const fitCameraToModel = () => {
+    const sphere = new THREE.Box3().setFromObject(activeModel).getBoundingSphere(new THREE.Sphere());
+    const verticalFov = THREE.MathUtils.degToRad(camera.fov);
+    const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * camera.aspect);
+    const distance = sphere.radius / Math.sin(Math.min(verticalFov, horizontalFov) / 2) * 1.12;
+    const direction = new THREE.Vector3(1, 0.65, 1).normalize();
+    camera.position.copy(sphere.center).addScaledVector(direction, distance);
+    controls.target.copy(sphere.center);
+    controls.minDistance = sphere.radius * 1.25;
+    controls.maxDistance = distance * 2.5;
+    controls.update();
+};
+
 const frameModel = (model) => {
     const bounds = new THREE.Box3().setFromObject(model);
     const size = bounds.getSize(new THREE.Vector3());
@@ -339,9 +334,7 @@ const frameModel = (model) => {
     model.position.sub(center.multiplyScalar(scale));
     model.position.y += 0.12;
 
-    camera.position.set(6, 4, 6);
-    controls.target.set(0, 0.75, 0);
-    controls.update();
+    fitCameraToModel();
 };
 
 const showFallback = (type) => {
@@ -351,18 +344,19 @@ const showFallback = (type) => {
     }
     activeModel = fallbackCache.get(type).clone();
     scene.add(activeModel);
-    status.textContent = "Demo-Modell";
+    status.textContent = t("model-demo");
     frameModel(activeModel);
 };
 
 const loadModel = ({ modelPath, type }) => {
+    const requestId = ++modelRequestId;
     clearActiveModel();
-    status.textContent = "Modell wird geladen";
+    status.textContent = t("model-loading");
 
     if (modelCache.has(modelPath)) {
         activeModel = modelCache.get(modelPath).clone();
         scene.add(activeModel);
-        status.textContent = "Blender-Modell";
+        status.textContent = t("model-ready");
         frameModel(activeModel);
         return;
     }
@@ -370,6 +364,10 @@ const loadModel = ({ modelPath, type }) => {
     loader.load(
         modelPath,
         (gltf) => {
+            if (requestId !== modelRequestId) {
+                return;
+            }
+
             modelCache.set(modelPath, gltf.scene);
             activeModel = gltf.scene.clone();
             activeModel.traverse((object) => {
@@ -379,38 +377,47 @@ const loadModel = ({ modelPath, type }) => {
                 }
             });
             scene.add(activeModel);
-            status.textContent = "Blender-Modell";
+            status.textContent = t("model-ready");
             frameModel(activeModel);
         },
         undefined,
-        () => showFallback(type),
+        () => {
+            if (requestId === modelRequestId) {
+                showFallback(type);
+            }
+        },
     );
 };
 
-const openPreview = (button) => {
-    ensureViewer();
-
+const openPreview = async (button) => {
+    const openingRequest = ++modelRequestId;
+    lastFocusedElement = button;
     galleryModal.hidden = true;
     modal.hidden = false;
-
     updateModalOpenState();
     title.textContent = button.dataset.title ?? "Container";
-    setSpinState(true);
-    resizeRenderer();
+    status.textContent = t("model-loading");
+    spinToggle.disabled = true;
+    modal.querySelector(".modal-close")?.focus();
 
-    viewerRunning = true;
-
-    if (!animationId) {
-        animate();
+    try {
+        await ensureViewer();
+        if (openingRequest !== modelRequestId || modal.hidden) return;
+        spinToggle.disabled = false;
+        setSpinState(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+        resizeRenderer();
+        viewerRunning = true;
+        if (!animationId) animate();
+        loadModel({ modelPath: button.dataset.model, type: button.dataset.type });
+    } catch {
+        if (openingRequest === modelRequestId && !modal.hidden) {
+            status.textContent = t("model-error");
+        }
     }
-
-    loadModel({
-        modelPath: button.dataset.model,
-        type: button.dataset.type,
-    });
 };
 
 const closePreview = () => {
+    modelRequestId += 1;
     modal.hidden = true;
     viewerRunning = false;
 
@@ -420,6 +427,7 @@ const closePreview = () => {
     }
 
     updateModalOpenState();
+    lastFocusedElement?.focus?.();
 };
 
 const parseGalleryImages = (value) => (value ?? "")
@@ -443,9 +451,9 @@ const showGalleryImage = (nextIndex) => {
     if (!galleryImages.length) {
         galleryImage.hidden = true;
         galleryFallback.hidden = false;
-        galleryFallback.textContent = "Noch keine Bildpfade eingetragen.";
+        galleryFallback.textContent = t("gallery-empty");
         galleryCaption.textContent = "";
-        galleryStatus.textContent = "Keine Bilder";
+        galleryStatus.textContent = t("gallery-label");
         updateGalleryControls();
         return;
     }
@@ -454,9 +462,9 @@ const showGalleryImage = (nextIndex) => {
     const src = galleryImages[galleryIndex];
     const displayIndex = galleryIndex + 1;
 
-    galleryStatus.textContent = `Bild ${displayIndex} von ${galleryImages.length}`;
-    galleryCaption.textContent = `${galleryTitle.textContent} - Bild ${displayIndex}`;
-    galleryImage.alt = `${galleryTitle.textContent} Bild ${displayIndex}`;
+    galleryStatus.textContent = t("gallery-status", { index: displayIndex, count: galleryImages.length });
+    galleryCaption.textContent = t("gallery-image", { product: galleryTitle.textContent, index: displayIndex });
+    galleryImage.alt = galleryCaption.textContent;
     galleryFallback.hidden = true;
     galleryImage.hidden = false;
     galleryImage.src = src;
@@ -470,7 +478,7 @@ const renderGalleryThumbs = () => {
         const thumb = document.createElement("button");
         thumb.className = "gallery-thumb";
         thumb.type = "button";
-        thumb.setAttribute("aria-label", `Bild ${index + 1} anzeigen`);
+        thumb.setAttribute("aria-label", t("gallery-thumb", { index: index + 1 }));
 
         const thumbImage = document.createElement("img");
         thumbImage.src = src;
@@ -480,7 +488,7 @@ const renderGalleryThumbs = () => {
         thumbImage.addEventListener("error", () => {
             thumbImage.remove();
             const fallback = document.createElement("span");
-            fallback.textContent = `Bild ${index + 1}`;
+            fallback.textContent = String(index + 1);
             thumb.append(fallback);
         }, { once: true });
 
@@ -491,6 +499,8 @@ const renderGalleryThumbs = () => {
 };
 
 const openGallery = (button) => {
+    if (!modal.hidden) closePreview();
+    lastFocusedElement = button;
     modal.hidden = true;
     galleryImages = parseGalleryImages(button.dataset.images);
     galleryIndex = 0;
@@ -500,11 +510,13 @@ const openGallery = (button) => {
     updateModalOpenState();
     renderGalleryThumbs();
     showGalleryImage(0);
+    galleryModal.querySelector(".modal-close")?.focus();
 };
 
 const closeGallery = () => {
     galleryModal.hidden = true;
     updateModalOpenState();
+    lastFocusedElement?.focus?.();
 };
 
 previewButtons.forEach((button) => {
@@ -516,6 +528,9 @@ closeButtons.forEach((button) => {
 });
 
 galleryButtons.forEach((button) => {
+    const hasImages = parseGalleryImages(button.dataset.images).length > 0;
+    button.disabled = !hasImages;
+
     button.addEventListener("click", () => openGallery(button));
 });
 
@@ -536,10 +551,9 @@ galleryNext.addEventListener("click", () => {
 });
 
 galleryImage.addEventListener("error", () => {
-    const missingPath = galleryImages[galleryIndex] ?? "";
     galleryImage.hidden = true;
     galleryFallback.hidden = false;
-    galleryFallback.textContent = `Bilddatei noch nicht gefunden: ${missingPath}`;
+    galleryFallback.textContent = t("gallery-error");
 });
 
 galleryStage.addEventListener("pointerdown", (event) => {
@@ -570,6 +584,19 @@ galleryStage.addEventListener("pointercancel", () => {
 });
 
 window.addEventListener("keydown", (event) => {
+    const dialog = !modal.hidden ? modal.querySelector("[role='dialog']") : !galleryModal.hidden ? galleryModal.querySelector("[role='dialog']") : null;
+    if (dialog && event.key === "Tab") {
+        const items = Array.from(dialog.querySelectorAll("button:not(:disabled), a[href], [tabindex='0']"));
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+        }
+    }
     if (!galleryModal.hidden) {
         if (event.key === "Escape") {
             closeGallery();
@@ -601,116 +628,73 @@ window.addEventListener("beforeunload", () => {
 });
 
 
- const header = document.querySelector('[data-elevate]');
-        const toggle = document.querySelector('.nav-toggle');
-        const nav = document.querySelector('.site-nav');
-        const revealItems = document.querySelectorAll('.reveal');
+const header = document.querySelector('[data-elevate]');
+const toggle = document.querySelector('.nav-toggle');
+const nav = document.querySelector('.site-nav');
+const langButton = document.querySelector('#selected-lang');
+const langDropdown = document.querySelector('#lang-dropdown');
+const mobileNavigation = window.matchMedia('(max-width: 900px)');
 
-        const setHeaderState = () => {
-            header.classList.toggle('is-scrolled', window.scrollY > 12);
-        };
+const closeLanguages = () => {
+    langDropdown.classList.remove('show');
+    langButton.setAttribute('aria-expanded', 'false');
+};
 
-        toggle.addEventListener('click', () => {
-            const isOpen = nav.classList.toggle('is-open');
-            toggle.classList.toggle('is-open', isOpen);
-            toggle.setAttribute('aria-expanded', String(isOpen));
-        });
+const setNavOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', t(open ? 'nav-close' : 'nav-open'));
+    if (!open) closeLanguages();
+};
 
-        nav.addEventListener('click', (event) => {
-            if (event.target.matches('a:not(.lang-menu a)')) {
-                nav.classList.remove('is-open');
-                toggle.classList.remove('is-open');
-                toggle.setAttribute('aria-expanded', 'false');
-            }
-        });
+toggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('is-open')));
+nav.addEventListener('click', event => {
+    if (event.target.closest('a[href^="#"]') && !event.target.closest('.lang-menu')) setNavOpen(false);
+});
+document.addEventListener('click', event => {
+    if (!event.target.closest('.lang-menu')) closeLanguages();
+    if (mobileNavigation.matches && !nav.contains(event.target) && !toggle.contains(event.target)) setNavOpen(false);
+});
+document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !modal.hidden || !galleryModal.hidden) return;
+    if (langDropdown.classList.contains('show')) {
+        closeLanguages();
+        langButton.focus();
+    } else if (nav.classList.contains('is-open')) {
+        setNavOpen(false);
+        toggle.focus();
+    }
+});
+mobileNavigation.addEventListener('change', () => setNavOpen(false));
+langButton.addEventListener('click', () => {
+    const open = langDropdown.classList.toggle('show');
+    langButton.setAttribute('aria-expanded', String(open));
+});
+document.querySelectorAll('.lang-menu [data-value]').forEach(link => {
+    link.addEventListener('click', event => {
+        event.preventDefault();
+        const chosenLanguage = link.dataset.value;
+        setNavOpen(false);
+        setLanguage(chosenLanguage);
+        if (mobileNavigation.matches) toggle.focus();
+        else langButton.focus();
+    });
+});
+const setHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+window.addEventListener('scroll', setHeaderState, { passive: true });
+setHeaderState();
 
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.18 });
+document.addEventListener('languagechange', () => {
+    toggle.setAttribute('aria-label', t(nav.classList.contains('is-open') ? 'nav-close' : 'nav-open'));
+    setSpinState(isSpinning);
+    Array.from(reviewDots.children).forEach((dot, index) => dot.setAttribute('aria-label', t('review-dot', { index: index + 1 })));
+    if (!galleryModal.hidden) {
+        galleryTitle.textContent = lastFocusedElement?.dataset.title || 'Container';
+        renderGalleryThumbs();
+        showGalleryImage(galleryIndex);
+    }
+    if (!modal.hidden) title.textContent = lastFocusedElement?.dataset.title || 'Container';
+});
 
-        revealItems.forEach((item) => revealObserver.observe(item));
-        setHeaderState();
-        window.addEventListener('scroll', setHeaderState, { passive: true });
-
-
-         // Funktion zum Wechseln der Sprache in den Texten
-        function changeLanguage(lang) {
-            const elements = document.querySelectorAll('[data-i18n], [data-i18n-aria-label]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-
-                const ariaKey = el.getAttribute('data-i18n-aria-label');
-                if (translations[lang] && translations[lang][ariaKey]) {
-                    el.setAttribute('aria-label', translations[lang][ariaKey]);
-                }
-            });
-            document.documentElement.lang = lang;
-        }
-
-        // Funktion zum Aktualisieren des sichtbaren Flaggen-Buttons
-        function updateDropdownUI(lang) {
-            const selectedUI = document.getElementById("selected-lang");
-            selectedUI.textContent = lang;
-            selectedUI.className = `selected-lang ${lang}`;
-        }
-
-        function getBrowserLanguage() {
-            const browserLanguage = (navigator.language || "").toLowerCase();
-            const language = browserLanguage.split("-")[0];
-            const supportedLanguages = ["de", "en", "ru", "bg"];
-
-            return supportedLanguages.includes(language) ? language : "de";
-        }
-
-        // KLICK-MODUS FÜR DAS DROPDOWN-MENÜ
-        const langBtn = document.getElementById("selected-lang");
-        const langDropdown = document.getElementById("lang-dropdown");
-
-        // Öffnen/Schließen bei Klick auf den aktuellen Sprach-Button
-        langBtn.addEventListener("click", (e) => {
-            e.stopPropagation(); // Verhindert sofortiges Schließen durch den Document-Klick
-            langDropdown.classList.toggle("show");
-        });
-
-        // Schließen, wenn man irgendwo anders auf die Seite klickt
-        document.addEventListener("click", () => {
-            langDropdown.classList.remove("show");
-        });
-
-        // Event-Listener für die Auswahl einer Sprache im Dropdown
-        const langLinks = document.querySelectorAll('.lang-menu ul li a');
-        langLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                
-                const selectedLang = e.target.getAttribute('data-value');
-                
-                // 1. Sprache speichern
-                localStorage.setItem("lang", selectedLang);
-                
-                // 2. Dropdown UI anpassen und Menü schließen
-                updateDropdownUI(selectedLang);
-                langDropdown.classList.remove("show");
-                
-                // 3. Texte übersetzen
-                changeLanguage(selectedLang);
-            });
-        });
-
-        // Beim Laden der Seite ausführen
-        window.addEventListener("DOMContentLoaded", () => {
-            const savedLang = localStorage.getItem("lang");
-            const supportedLanguages = ["de", "en", "ru", "bg"];
-            const initialLang = supportedLanguages.includes(savedLang) ? savedLang : getBrowserLanguage();
-
-            updateDropdownUI(initialLang);
-            changeLanguage(initialLang);
-        });
+initLanguage();

@@ -1,0 +1,10 @@
+ContainerRent Varna – Sicherung vor der Überarbeitung vom 01.11.2026
+
+Archiv: 
+ContainerRent-vor-Ueberarbeitung-2026-11-01-1793538602.zip
+
+Enthält den vorherigen Stand der Website mit Bildern, Modellen und Projektdateien.
+Die Sicherung wurde vor den Änderungen angelegt. index.html, style.css, viewer.js und server.mjs wurden mit den Originalen verglichen.
+
+Zum Wiederherstellen das ZIP in einen neuen, leeren Ordner entpacken. Die Dateien bleiben dadurch getrennt von der überarbeiteten Website.
+Die installierten Abhängigkeiten (node_modules) und die Git-Verwaltung sind nicht Bestandteil der Sicherung.
